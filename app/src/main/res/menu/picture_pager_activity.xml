@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="home"
+        android:id="@+id/picture_this_activity"
+        android:icon="@drawable/ic_baseline_home_24"
+        app:showAsAction="always"/>
+    <item android:title="rotate -90"
+        android:id="@+id/rotate_minus_90"/>
+    <item android:title="rotate 90"
+        android:id="@+id/rotate_plus_90"/>
+</menu>

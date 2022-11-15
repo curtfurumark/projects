@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/icon_home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="home"
+        app:showAsAction="always"></item>
+    <item
+        android:id="@+id/icon_save"
+        android:icon="@drawable/ic_baseline_add_24"
+        android:title="save"
+        app:showAsAction="always" />
+
+    <item android:title="add reference picture"
+        android:id="@+id/add_reference_picture" />
+    <item android:title="new picture"
+        android:id="@+id/new_picture"/>
+    <item android:title="delete artwork"
+        android:id="@+id/delete_artwork"/>
+    <item android:title="add todo task"
+        android:id="@+id/add_task"/>"
+</menu>

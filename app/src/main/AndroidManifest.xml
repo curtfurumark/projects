@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="se.curtrunebylund.projects">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Projects">
+        <activity
+            android:name=".infinity.InfinityActivity"
+            android:exported="false" />
+        <activity
+            android:name=".dev.DevTestActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activities.SplashActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".art.PicturePagerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".music.TaskAddActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".music.AttemptListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".music.ProjectEditorActivity"
+            android:screenOrientation="portrait" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="se.curtrunebylund.projects"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".activities.DebugActivity"
+            android:label="@string/title_activity_debug"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Projects.NoActionBar" />
+        <activity
+            android:name=".music.AttemptEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".music.AttemptsAddEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".art.ArtworkEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".art.ShareToMeActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".art.PictureEditActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".art.ArtWorkListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".music.ProjectListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".music.TaskListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".infinity.InfinityEditorActivity"
+            android:screenOrientation="portrait"/>
+    </application>
+
+</manifest>

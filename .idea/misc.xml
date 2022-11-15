@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/artwork_edit_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/artwork_list_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/attempt_adapter.xml" value="0.4" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/attempt_bottom_sheet.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/attempt_edit_activity.xml" value="0.4" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/attempt_list_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/attempts_add_edit_activity.xml" value="0.11927083333333334" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/counter_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/debug_activity.xml" value="0.184375" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/debug_activity2.xml" value="0.4" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/infinity_activity.xml" value="0.24010416666666667" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/infinity_editor_activity.xml" value="0.264" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/list_item_adapter.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/picture_edit_activity.xml" value="0.10364583333333334" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/project_adapter.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/project_add_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/project_list_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/session_activity.xml" value="0.4" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/session_adapter.xml" value="0.264" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/splash_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/task_adapter.xml" value="0.264" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/task_add_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/task_bottom_sheet.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/layout/task_list_activity.xml" value="0.2" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/artwork_edit_activty.xml" value="0.15885416666666666" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/artwork_list_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/attempt_edit_activity.xml" value="0.1984732824427481" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/attempt_list_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/infinity_editor.xml" value="0.11927083333333334" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/infinity_list_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/music_project_list_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/picture_edit_activity.xml" value="0.13958333333333334" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/project_add_menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/session_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/splash_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/infinity_editor_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/project_editor_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/menu/attempt_edit_activity.xml" value="0.25416666666666665" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

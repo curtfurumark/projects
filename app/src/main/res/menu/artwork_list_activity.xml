@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/icon_home"
+        android:title="home"
+        android:icon="@drawable/ic_baseline_home_24"
+        app:showAsAction="always"/>
+    <item android:id="@+id/new_artwork"
+        android:title="new artwork"/>
+    <item android:id="@+id/sort_ascending_update"
+        android:title="sort ascending"/>
+    <item android:id="@+id/sort_descending_update"
+        android:title="sort descending update"/>
+    <item android:id="@+id/sort_title"
+        android:title="sort by title"/>
+    <item android:title="picture pager"
+        android:id="@+id/picture_pager_activity"/>
+    <item android:title="picture edit activity"
+        android:id="@+id/picture_edit_activity"/>
+
+</menu>

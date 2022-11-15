@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editText_attemptBottomSheet_heading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="heading"
+        android:inputType="text"
+        android:minHeight="48dp" />
+
+    <EditText
+        android:id="@+id/editText_attemptBottomSheet_numberAttempts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="number"
+        android:inputType="number"
+        android:minHeight="48dp" />
+
+    <Button
+        android:id="@+id/button_attemptButtonSheet_addAttempt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add attempt" />
+</LinearLayout>
