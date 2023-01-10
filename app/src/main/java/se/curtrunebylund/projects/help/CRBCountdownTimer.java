@@ -2,7 +2,7 @@ package se.curtrunebylund.projects.help;
 
 import android.os.CountDownTimer;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 
 
 public class CRBCountdownTimer {

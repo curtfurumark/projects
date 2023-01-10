@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
 
 

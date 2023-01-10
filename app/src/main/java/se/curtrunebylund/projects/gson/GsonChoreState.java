@@ -1,8 +1,7 @@
 package se.curtrunebylund.projects.gson;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
+import static logger.CRBLogger.log;
+import static logger.CRBLogger.logException;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -11,21 +10,21 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import se.curtrunebylund.projects.Debug;
 import se.curtrunebylund.projects.db.ChoreBase;
+import se.curtrunebylund.projects.util.Debug;
 
 
 public class GsonChoreState implements JsonDeserializer<ChoreBase.State> {
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    public boolean verbose = false;
     @Override
     public ChoreBase.State deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        Debug.log("GsonChoreState.deserialize()");
+        if (verbose) log("GsonChoreState.deserialize()");
         int state_index = 0;
         try{
             state_index = json.getAsInt();
-            Debug.log("state_index " + state_index);
+            if ( verbose) log("state_index " + state_index);
         }catch(Exception e){
-            Debug.log("GsonChoreState.deserialize exception: " + e.toString());
+            logException(e);
         }
         return ChoreBase.State.values()[state_index];
     }

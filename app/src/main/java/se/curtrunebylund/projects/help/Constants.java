@@ -18,4 +18,7 @@ public class Constants {
     public static final String INTENT_SERIALIZED_LIST_ITEM = "INTENT_SERIALIZED_LIST_ITEM";
     public static final String INTENT_CREATE_SIBLING = "INTENT_CREATE_SIBLING";
     public static final String INTENT_SERIALIZED_PARENT = "INTENT_SERIALIZED_PARENT";
+    public static final String INTENT_ASSIGNMENT = "INTENT_ASSIGNMENT";
+    public static final String INTENT_MUSIC_SESSION = "INTENT_MUSIC_SESSION" ;
+    public static final String INTENT_EDIT_ITEM = "INTENT_EDIT_ITEM";
 }

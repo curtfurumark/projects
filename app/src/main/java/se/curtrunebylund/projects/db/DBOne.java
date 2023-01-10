@@ -24,11 +24,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.gson.GsonEasy;
-import se.curtrunebylund.projects.help.Converter;
-import se.curtrunebylund.projects.projects.Project;
-import se.curtrunebylund.projects.projects.Task;
+import se.curtrunebylund.projects.classes.Project;
+import se.curtrunebylund.projects.classes.Task;
+import util.Converter;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -281,7 +281,7 @@ public class DBOne {
         httpPost.add("tags", task.getTags());
         httpPost.add("state", task.getState().toString());
         httpPost.add("updated", task.getUpdated().toString());
-        httpPost.add("target_date", task.getTargetDate().format(DateTimeFormatter.ofPattern(Converter.DATE__FORMAT_PATTERN)));
+        httpPost.add("target_date", task.getTargetDate().format(DateTimeFormatter.ofPattern(Converter.DATE_FORMAT_PATTERN)));
         httpPost.add("parent_id", task.getProjectID());
         httpPost.add("parent_task_id", task.getParentId());
         httpPost.add("id", String.valueOf(task.getId()));

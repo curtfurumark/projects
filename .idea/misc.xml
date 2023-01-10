@@ -38,9 +38,22 @@
         <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/project_add_menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/session_activity.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/curt/AndroidStudioProjects/Projects/app/src/main/res/menu/splash_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/artwork_edit_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/attempt_adapter.xml" value="0.4" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/attempt_bottom_sheet.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/attempt_edit_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/attempts_add_edit_activity.xml" value="0.10677083333333333" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/counter_activity.xml" value="0.25416666666666665" />
         <entry key="..\:/dev/android/Projects/app/src/main/res/layout/infinity_editor_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/item_editor.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/music_session_activity.xml" value="0.25416666666666665" />
         <entry key="..\:/dev/android/Projects/app/src/main/res/layout/project_editor_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/project_list_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/session_activity.xml" value="0.1" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/layout/splash_activity.xml" value="0.25416666666666665" />
         <entry key="..\:/dev/android/Projects/app/src/main/res/menu/attempt_edit_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/menu/counter_activity.xml" value="0.25416666666666665" />
+        <entry key="..\:/dev/android/Projects/app/src/main/res/menu/splash_activity.xml" value="0.25416666666666665" />
       </map>
     </option>
   </component>

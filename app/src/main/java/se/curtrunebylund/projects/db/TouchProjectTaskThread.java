@@ -1,8 +1,8 @@
 package se.curtrunebylund.projects.db;
 
-import se.curtrunebylund.projects.Debug;
-import se.curtrunebylund.projects.projects.Project;
-import se.curtrunebylund.projects.projects.Task;
+import se.curtrunebylund.projects.util.Debug;
+import se.curtrunebylund.projects.classes.Project;
+import se.curtrunebylund.projects.classes.Task;
 
 public class TouchProjectTaskThread extends Thread{
     private Project project;

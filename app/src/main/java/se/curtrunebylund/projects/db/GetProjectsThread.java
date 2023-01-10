@@ -7,8 +7,8 @@ import androidx.annotation.RequiresApi;
 
 import java.util.List;
 
-import se.curtrunebylund.projects.Debug;
-import se.curtrunebylund.projects.projects.Project;
+import se.curtrunebylund.projects.util.Debug;
+import se.curtrunebylund.projects.classes.Project;
 
 public class GetProjectsThread extends Thread {
 
@@ -23,8 +23,7 @@ public class GetProjectsThread extends Thread {
         this.activity = activity;
         this.callback = callback;
     }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     @Override
     public void run() {
         Debug.log("GetProjectsThread().run()");

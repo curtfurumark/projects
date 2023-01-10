@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.art.ArtWork;
 import se.curtrunebylund.projects.art.ArtWorkManager;

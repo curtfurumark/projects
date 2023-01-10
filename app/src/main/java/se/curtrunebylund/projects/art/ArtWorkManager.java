@@ -5,10 +5,8 @@ import android.net.Uri;
 
 import com.google.gson.Gson;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.PrintStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -18,7 +16,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 
 
 public class ArtWorkManager {

@@ -1,6 +1,5 @@
 package se.curtrunebylund.projects.util;
 
-import se.curtrunebylund.projects.Debug;
 import se.curtrunebylund.projects.infinity.ListItem;
 
 public class Stack {

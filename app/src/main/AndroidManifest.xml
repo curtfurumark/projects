@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Projects">
         <activity
-            android:name=".infinity.InfinityActivity"
+            android:name=".activities.InfinityActivity"
             android:exported="false" />
         <activity
             android:name=".dev.DevTestActivity"
@@ -30,13 +30,13 @@
             android:name=".art.PicturePagerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".music.TaskAddActivity"
+            android:name=".activities.TaskAddActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".music.AttemptListActivity"
+            android:name=".activities.AttemptListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".music.ProjectEditorActivity"
+            android:name=".activities.ProjectEditorActivity"
             android:screenOrientation="portrait" />
 
         <provider
@@ -55,10 +55,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Projects.NoActionBar" />
         <activity
-            android:name=".music.AttemptEditActivity"
+            android:name=".activities.ItemEditorActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".music.AttemptsAddEditActivity"
+            android:name=".activities.MusicSessionActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".art.ArtworkEditActivity"
@@ -79,10 +79,10 @@
             android:name=".art.ArtWorkListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".music.ProjectListActivity"
+            android:name=".activities.ProjectListActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".music.TaskListActivity"
+            android:name=".activities.TaskListActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".infinity.InfinityEditorActivity"
             android:screenOrientation="portrait"/>

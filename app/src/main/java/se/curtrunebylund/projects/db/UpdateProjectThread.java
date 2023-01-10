@@ -7,8 +7,8 @@ import androidx.annotation.RequiresApi;
 
 import java.io.IOException;
 
-import se.curtrunebylund.projects.Debug;
-import se.curtrunebylund.projects.projects.Project;
+import se.curtrunebylund.projects.util.Debug;
+import se.curtrunebylund.projects.classes.Project;
 
 
 

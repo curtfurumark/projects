@@ -5,8 +5,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import se.curtrunebylund.projects.Debug;
-import se.curtrunebylund.projects.projects.Task;
+import se.curtrunebylund.projects.util.Debug;
+import se.curtrunebylund.projects.classes.Task;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)

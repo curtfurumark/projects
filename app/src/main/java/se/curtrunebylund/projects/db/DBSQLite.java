@@ -11,16 +11,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import se.curtrunebylund.projects.Debug;
+import static se.curtrunebylund.projects.util.ProjectsLogger.*;
+
+
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.art.ArtWork;
 import se.curtrunebylund.projects.infinity.ListItem;
-import se.curtrunebylund.projects.music.Attempt;
-import se.curtrunebylund.projects.projects.Task;
+import se.curtrunebylund.projects.classes.Attempt;
+import se.curtrunebylund.projects.classes.Task;
+import se.curtrunebylund.projects.util.ProjectsLogger;
+
+import static se.curtrunebylund.projects.util.ProjectsLogger.*;
 
 public class DBSQLite extends SQLiteOpenHelper {
     private static final String TABLE_ATTEMPTS = "attempts";
     private static final String TABLE_INFINITY = "infinity";
-    private Context context;
+    //private Context context;
     private SQLiteDatabase db;
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "projects.db";
@@ -37,11 +43,24 @@ public class DBSQLite extends SQLiteOpenHelper {
 
     public DBSQLite(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
-        this.context = context;
+        //this.context = context;
+    }
+    @Override
+    public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        log("DBSQLite.onCreate()");
+        //sqLiteDatabase.execSQL(DBStuff.CREATE_INFINITY_TABLE);
+        log("...after create table attempts");
     }
 
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+
+    }
+
+
+
     public ListItem add(ListItem item) {
-        Debug.log("DBSQLite.add(ListItem)");
+        log("DBSQLite.add(ListItem)");
         db = this.getWritableDatabase();
         long id = db.insert(TABLE_INFINITY, null, item.getContentValues());
         item.setID(id);
@@ -50,18 +69,26 @@ public class DBSQLite extends SQLiteOpenHelper {
         return item;
     }
 
+    public String getDBPath(){
+        log("DBSQLite.getDBPath()");
+        db = this.getReadableDatabase();
+        String path = db.getPath();
+        System.out.println("ccccccccccccccccccccccccccPATH: " + path);
+        return path;
+    }
+
     public void delete(Attempt attempt) {
-        Debug.log("DBProjects.delete(Attempt) ");
+        log("DBProjects.delete(Attempt) ");
         Debug.log(attempt);
         String where_clause = String.format(Locale.getDefault(),"id = %d", attempt.getId());
-        Debug.log("...where_clause: " + where_clause);
+        log("...where_clause: ", where_clause);
         db = this.getWritableDatabase();
         int rows_deleted = db.delete(TABLE_ATTEMPTS, where_clause, null);
-        Debug.log("...rows deleted: " + rows_deleted);
+        log("...rows deleted: " + rows_deleted);
     }
 
     public int delete(ListItem item) {
-        Debug.log("DBProjects.delete(ListItem) ");
+        log("DBProjects.delete(ListItem) ");
         //Debug.log(item);
         String where_clause = String.format("id = %d", item.getID());
         Debug.log("...where_clause: " + where_clause);
@@ -85,12 +112,12 @@ public class DBSQLite extends SQLiteOpenHelper {
     }
 
     public void executeSQL(String sql) {
-        Debug.log("DBSQLite.executeSQL(String query) " + sql);
+        log("DBSQLite.executeSQL(String query) ",sql);
         db = this.getWritableDatabase();
         db.execSQL(sql);
         db.close();
         db = null;
-        Debug.log("");
+        log("...end of executeSQL()");
     }
 
     public List<Attempt> getAttempts() {
@@ -107,7 +134,7 @@ public class DBSQLite extends SQLiteOpenHelper {
 
     public List<Attempt> getAttempts(long parent_id) {
         Debug.log("DBProjects.getAttempts(long parent_id) parent_id: " + parent_id);
-        String query = String.format("SELECT * from attempts  where parent_id = %d", parent_id);
+        String query = String.format(Locale.getDefault(),"SELECT * from attempts  where parent_id = %d", parent_id);
         return queryAttempts(query);
     }
 
@@ -202,7 +229,6 @@ public class DBSQLite extends SQLiteOpenHelper {
     public List<Attempt> insertAttempts(List<Attempt> attempts) {
         Debug.log("DBSQLite.insertAttempts(List<Attempt>) size: " + attempts.size());
         db = this.getWritableDatabase();
-        //db.execSQL("DELETE FROM attempts");
         for (Attempt attempt : attempts) {
             long id = db.insert(TABLE_ATTEMPTS, null, attempt.getContentValues());
             attempt.setId(id);
@@ -212,24 +238,12 @@ public class DBSQLite extends SQLiteOpenHelper {
         return attempts;
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Debug.log("DBProjects.onCreate()");
-        // sqLiteDatabase.execSQL(DBStuff.CREATE_MUSIC_TABLE);
-        Debug.log("...after create table attempts");
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
-    }
 
 
     public List<Attempt> queryAttempts(String query) {
         Debug.log("DBProjects.queryAttempts(String query ) " + query);
         List<Attempt> attempts = new ArrayList<>();
         db = this.getReadableDatabase();
-        //String query = String.format("SELECT * from attempts  where parent_id = %d", parent_id);
         Debug.log("...query: " + query);
         Cursor cursor = db.rawQuery(query, null);
         Debug.log(cursor);
@@ -246,19 +260,19 @@ public class DBSQLite extends SQLiteOpenHelper {
     }
 
     public void update(Attempt attempt) {
-        Debug.log("DBProjects.update(Attempt)");
+        log("DBLocal.update(Attempt)");
         String whereClause = String.format("id = %d", attempt.getId());
         db = this.getWritableDatabase();
-        Debug.log(attempt.getContentValues());
+        ProjectsLogger.log(attempt.getContentValues());
         int res = db.update(TABLE_ATTEMPTS, attempt.getContentValues(), whereClause, null);
-        Debug.log("...res: " + res);
+        log("...res: " ,res);
         db.close();
     }
 
     public long update(ListItem item) throws Exception {
-        System.out.printf("DBSQLite.update(ListItem) id = %d\n", item.getID());
+        log("DBSQLite.update(ListItem) id ", item.getID());
         String where_clause = String.format(Locale.getDefault(), "id = %d", item.getID());
-        Debug.log(item.getContentValues());
+        log(item.getContentValues());
         db = this.getWritableDatabase();
         long res = db.update(TABLE_INFINITY, item.getContentValues(), where_clause, null);
         Debug.log("\tres: " + res);
@@ -273,7 +287,13 @@ public class DBSQLite extends SQLiteOpenHelper {
         db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         Debug.log(cursor);
+        cursor.close();
         return false;
+    }
+
+    public void printInfo() {
+        db = this.getReadableDatabase();
+        log(db);
     }
 }
 

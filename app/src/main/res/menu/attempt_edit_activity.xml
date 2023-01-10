@@ -16,5 +16,7 @@
         app:showAsAction="always"/>
     <item android:title="delete attempt"
         android:id="@+id/delete_attempt"/>
+    <item android:title="counter"
+        android:id="@+id/intent_counter"/>
 
 </menu>

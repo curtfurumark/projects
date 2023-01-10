@@ -13,9 +13,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
-import se.curtrunebylund.projects.Debug;
-import se.curtrunebylund.projects.help.Converter;
-import se.curtrunebylund.projects.projects.State;
+import item.State;
+import se.curtrunebylund.projects.util.Debug;
+import util.Converter;
 
 
 @RequiresApi(api = Build.VERSION_CODES.O)
@@ -91,7 +91,7 @@ public class HTTPPost {
         if( target_date == null){
             Debug.log("HTTPPost.add(String, LocalDate) called with null date");
         }
-        postPairs.put(key, target_date != null? target_date.format(DateTimeFormatter.ofPattern(Converter.DATE__FORMAT_PATTERN)): "");
+        postPairs.put(key, target_date != null? target_date.format(DateTimeFormatter.ofPattern(Converter.DATE_FORMAT_PATTERN)): "");
     }
 
     public void add(String key, State state1) {

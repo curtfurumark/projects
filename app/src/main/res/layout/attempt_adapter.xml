@@ -10,41 +10,21 @@
         android:id="@+id/textView_sessionAdapter_heading"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:hint="heading"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkBox_sessionAdapter"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView_sessionAdapter_grade"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:hint="grade"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_sessionAdapter_heading" />
-
-    <TextView
-        android:id="@+id/textView_sessionAdapter_updated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="date time"
-        android:textSize="20dp"
-        app:layout_constraintStart_toEndOf="@+id/checkBox_sessionAdapter"
-        app:layout_constraintTop_toBottomOf="@+id/textView_sessionAdapter_heading" />
-
-    <CheckBox
-        android:id="@+id/checkBox_sessionAdapter"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView_sessionAdapter_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="info"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_sessionAdapter_heading" />
 
     <androidx.constraintlayout.widget.Barrier
         android:layout_width="wrap_content"
@@ -52,5 +32,14 @@
         app:barrierDirection="top"
         tools:layout_editor_absoluteX="163dp"
         tools:layout_editor_absoluteY="55dp" />
+
+    <ImageView
+        android:id="@+id/imageView_itemAdapter_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView_sessionAdapter_heading"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_edit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

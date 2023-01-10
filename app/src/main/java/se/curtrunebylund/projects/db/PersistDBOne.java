@@ -1,10 +1,14 @@
 package se.curtrunebylund.projects.db;
 
+import static se.curtrunebylund.projects.util.ProjectsLogger.log;
+
 import android.app.Activity;
 
-import se.curtrunebylund.projects.Debug;
-import se.curtrunebylund.projects.projects.Project;
-import se.curtrunebylund.projects.projects.Task;
+import persist.Queeries;
+import se.curtrunebylund.projects.classes.Project;
+import se.curtrunebylund.projects.classes.Task;
+import se.curtrunebylund.projects.threads.SelectThread;
+import se.curtrunebylund.projects.util.Debug;
 
 public class PersistDBOne {
     public static void add(Project project, AddProjectThread.Callback callback, Activity activity){
@@ -39,10 +43,11 @@ public class PersistDBOne {
        getChildrenToTaskThread.start();
     }
 
-    public static void getProjects(GetProjectsThread.Callback callback, Activity activity) {
-        Debug.log("PersistDBOne.getProjects()");
-        GetProjectsThread getProjectsThread = new GetProjectsThread(callback, activity);
-        getProjectsThread.start();
+    public static void getProjects(SelectThread.Callback callback) {
+        log("PersistDBOne.getProjects(Callback callback)");
+        String query =  Queeries.getSelect(Queeries.Table.SEEBEE_PROJECT);
+        SelectThread thread = new SelectThread(query,callback);
+        thread.start();
 
     }
 
@@ -54,13 +59,13 @@ public class PersistDBOne {
     }
 
     public static void update(Task task, UpdateTaskThread.Callback callback, Activity activity) {
-        Debug.log("PersistDBOne.update(Task) id = " + task.getId());
+        log("PersistDBOne.update(Task) id = " + task.getId());
         UpdateTaskThread updateTaskThread = new UpdateTaskThread(task, callback, activity);
         updateTaskThread.start();
     }
 
     public static void touch(Project project, Task task) {
-        Debug.log("PersistDBOne.touch(Project, Task)");
+        log("PersistDBOne.touch(Project, Task)");
         TouchProjectTaskThread thread = new TouchProjectTaskThread(project, task);
         thread.start();
     }

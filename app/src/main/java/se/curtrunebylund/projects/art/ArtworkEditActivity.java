@@ -27,7 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.activities.DebugActivity;
 import se.curtrunebylund.projects.R;
 

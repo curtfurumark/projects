@@ -16,7 +16,7 @@ import androidx.viewpager.widget.PagerAdapter;
 import java.util.List;
 import java.util.Objects;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
 
 public class PicturePagerAdapter extends PagerAdapter {

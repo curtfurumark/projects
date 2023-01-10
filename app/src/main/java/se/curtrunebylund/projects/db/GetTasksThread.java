@@ -8,8 +8,8 @@ import androidx.annotation.RequiresApi;
 
 import java.util.List;
 
-import se.curtrunebylund.projects.Debug;
-import se.curtrunebylund.projects.projects.Task;
+import se.curtrunebylund.projects.util.Debug;
+import se.curtrunebylund.projects.classes.Task;
 
 public class GetTasksThread extends Thread{
         private final String parent_id;

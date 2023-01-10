@@ -27,10 +27,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.activities.SplashActivity;
-import se.curtrunebylund.projects.data.DevStuff;
+import se.curtrunebylund.projects.projects.DevStuff;
 
 
 public class ArtWorkListActivity extends AppCompatActivity {

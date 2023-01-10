@@ -4,64 +4,55 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".music.CounterActivity">
-
-    <Button
-        android:id="@+id/button_correct"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="OK"
-        android:textSize="50dp"
-        android:onClick="onButtonOK"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/editText_correct"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/button_reset" />
-
-    <Button
-        android:id="@+id/button_fail"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="FAIL"
-        android:textSize="50dp"
-        android:onClick="onButtonFail"
-        app:layout_constraintTop_toBottomOf="@id/editText_fails"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+    tools:context=".projects.CounterActivity">
 
     <EditText
-        android:id="@+id/editText_correct"
-        android:layout_width="wrap_content"
+        android:id="@+id/editText_counterActivity_assignment"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:onClick="onButtonOK"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/editText_fails"
-        app:layout_constraintTop_toBottomOf="@+id/button_correct" />
-
-    <EditText
-        android:id="@+id/editText_fails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintBottom_toTopOf="@+id/button_fail"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_correct" />
-
-    <Button
-        android:id="@+id/button_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="RESET"
-        android:textSize="50dp"
-        android:onClick="onButtonReset"
+        android:inputType="text"
+        android:text="assignment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_counterActivity_repetion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="onButtonOK"
+        android:text="OK"
+        android:textSize="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/textView_counterActivity_nrepetitions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:onClick="onButtonOK"
+        android:text="Name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_counterActivity_reset" />
+
+    <Button
+        android:id="@+id/button_counterActivity_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="onButtonReset"
+        android:text="RESET"
+        android:textSize="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_counterActivity_assignment" />
 </androidx.constraintlayout.widget.ConstraintLayout>

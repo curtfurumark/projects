@@ -14,12 +14,11 @@
         android:inputType="text"
         android:minHeight="48dp" />
 
-    <EditText
-        android:id="@+id/editText_attemptBottomSheet_numberAttempts"
+
+    <Spinner
+        android:id="@+id/spinner_attemptBottomSheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="number"
-        android:inputType="number"
         android:minHeight="48dp" />
 
     <Button
@@ -27,4 +26,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="add attempt" />
+
 </LinearLayout>

@@ -5,7 +5,7 @@ import android.content.Context;
 import java.sql.SQLException;
 import java.util.List;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.infinity.ListItem;
 
 public class PersistInfinity {

@@ -5,7 +5,7 @@ import android.content.Context;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 
 public class ArtWorkFactory {
     /**

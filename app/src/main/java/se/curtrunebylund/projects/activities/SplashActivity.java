@@ -4,29 +4,31 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
 
 import logger.CRBLogger;
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.db.DBSQLite;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.db.DBStuff;
+import se.curtrunebylund.projects.db.DBAdmin;
 import se.curtrunebylund.projects.db.GetAllGrandChildrenThread;
 import se.curtrunebylund.projects.db.Result;
-import se.curtrunebylund.projects.infinity.InfinityActivity;
-import se.curtrunebylund.projects.projects.Task;
-import se.curtrunebylund.projects.music.ProjectListActivity;
+import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.art.ArtWorkListActivity;
+import se.curtrunebylund.projects.util.ProjectsLogger;
 
 public class SplashActivity extends AppCompatActivity implements GetAllGrandChildrenThread.Callback {
     private TextView textView_art;
-    private TextView textView_music;
+    private TextView textView_projects;
     private TextView textView_infinity;
 
     @Override
@@ -39,31 +41,28 @@ public class SplashActivity extends AppCompatActivity implements GetAllGrandChil
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Debug.log("SplashActivity.onCreate()");
+        Debug.log("SplashActivity.onCreate() infinity branch");
         textView_art = findViewById(R.id.textView_splash_art);
-        textView_music = findViewById(R.id.textView_splash_music);
+        textView_projects = findViewById(R.id.textView_splash_projects);
         textView_infinity = findViewById(R.id.textView_splash_infinity);
         textView_art.setOnClickListener(view -> startActivity(new Intent(this, ArtWorkListActivity.class)));
-        textView_music.setOnClickListener(view -> startActivity(new Intent(this, ProjectListActivity.class)));
-        textView_infinity.setOnClickListener(view -> startActivity(new Intent(SplashActivity.this, InfinityActivity.class)));
+        textView_infinity.setOnClickListener(view -> startActivity(new Intent(this, InfinityActivity.class)));
+        textView_projects.setOnClickListener(view -> startActivity(new Intent(this, ProjectListActivity.class)));
+        openDb();
+
+
     }
     private void forOnceInMyLife(){
-        Debug.log("SplashActivity.forOnceInMyLife()");
-        //List<Attempt> attempts = PersistDBProjects.getAttempts(this);
-        //Debug.logAttempts(attempts, false);
+        ProjectsLogger.log("SplashActivity.forOnceInMyLife()");
+        DBAdmin.createLogTable(this);
 
-        //PersistDBOne.getGrandChildrenTasks(this, this);
-        //DBStuff.createMusicTable(this);
-        //PersistSQLite.getTableNames(this);
-        //PersistInfinity.createTable(this);
-        DBStuff.addItem2InfinityTable("a heading", "dev", this);
-        DBStuff.addItem2InfinityTable("beheading", "dev", this);
-        DBStuff.addItem2InfinityTable("headlong", "dev", this);
-        //List<Attempt> attempts = PersistDBProjects.getAttempts(this);
-        //Debug.logAttempts(attempts, true);
-        //DBProjects db = new DBProjects(this);
-        //db.executeSQL("DROP TABLE attempts");
-        //db.executeSQL(DBStuff.CREATE_ATTEMPTS_TABLE);
+/*        DBSQLite dbsqLite = new DBSQLite(this);
+        dbsqLite.printInfo();
+        try {
+            DBAdmin.addColumnsToAttempts(this);
+        }catch(Exception e){
+            CRBLogger.log(e.toString());
+        }*/
     }
 
     @Override
@@ -79,8 +78,17 @@ public class SplashActivity extends AppCompatActivity implements GetAllGrandChil
             case R.id.for_once_in_my_life:
                 forOnceInMyLife();
                 return true;
+            case R.id.splash_open_db:
+                openDb();
+                break;
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openDb() {
+        DBSQLite db = new DBSQLite(this);
+        SQLiteDatabase database = db.getReadableDatabase();
     }
 
     /**
@@ -96,7 +104,7 @@ public class SplashActivity extends AppCompatActivity implements GetAllGrandChil
             return;
         }
         Debug.showMessage(this, "will copy tasks to attempts");
-        DBStuff.copyTasksToDBLocal(tasks, this);
+        DBAdmin.copyTasksToDBLocal(tasks, this);
         Debug.showMessage(this, "done copying");
     }
 }

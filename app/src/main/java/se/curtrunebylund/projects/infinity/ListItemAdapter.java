@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.help.Converter;
+import util.Converter;
 
 
 public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.MyViewHolder>{

@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.activities.DebugActivity;
 import se.curtrunebylund.projects.R;
 

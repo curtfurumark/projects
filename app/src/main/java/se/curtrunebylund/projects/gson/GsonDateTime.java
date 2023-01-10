@@ -16,7 +16,6 @@ import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class GsonDateTime implements JsonDeserializer<LocalDateTime>, JsonSerializer<LocalDateTime> {
 
     @Override

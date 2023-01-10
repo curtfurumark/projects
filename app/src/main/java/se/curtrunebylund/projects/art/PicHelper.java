@@ -17,7 +17,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.util.Debug;
 
 /**
  * not really necessary this one
@@ -160,8 +160,6 @@ public class PicHelper {
         */
         return path;
     }
-
-
 
     public Bitmap rotateBitmap(Bitmap bitmap, float degrees) throws Exception {
         Debug.log("PictureEditActivity.rotateBitMap()");

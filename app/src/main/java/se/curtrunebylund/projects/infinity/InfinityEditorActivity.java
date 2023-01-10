@@ -17,11 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Locale;
 
-import se.curtrunebylund.projects.Debug;
+import se.curtrunebylund.projects.activities.InfinityActivity;
+import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.db.PersistInfinity;
 import se.curtrunebylund.projects.help.Constants;
-import se.curtrunebylund.projects.help.Converter;
+import util.Converter;
 
 public class InfinityEditorActivity extends AppCompatActivity {
     private EditText editText_heading;
