@@ -1,12 +1,10 @@
 package se.curtrunebylund.projects.activities;
 
 import android.content.Intent;
-import android.os.Build;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +16,7 @@ import java.util.Locale;
 
 import item.State;
 import se.curtrunebylund.projects.R;
+import se.curtrunebylund.projects.adapters.TaskAdapter;
 import se.curtrunebylund.projects.classes.Project;
 import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.db.GetTasksThread;
@@ -25,7 +24,6 @@ import se.curtrunebylund.projects.db.PersistDBOne;
 import se.curtrunebylund.projects.db.Result;
 import se.curtrunebylund.projects.db.UpdateTaskThread;
 import se.curtrunebylund.projects.help.Constants;
-import se.curtrunebylund.projects.adapters.TaskAdapter;
 import se.curtrunebylund.projects.util.Debug;
 
 public class TaskListActivity extends AppCompatActivity implements
@@ -36,7 +34,6 @@ public class TaskListActivity extends AppCompatActivity implements
     private java.util.List<Task> taskList = new ArrayList<>();
     private Project project;
     private TaskAdapter taskAdapter;
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +81,7 @@ public class TaskListActivity extends AppCompatActivity implements
             Debug.log("\ttasklist is null??? wtf");
         }
         Debug.log(result);
-        Debug.logTaskList(taskList);
+        //Debug.logTaskList(taskList);
         if( result.isOK() && taskList != null){
             this.taskList = taskList;
             sortTaskListUpdated();

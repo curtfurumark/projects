@@ -1,8 +1,5 @@
 package se.curtrunebylund.projects.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,26 +7,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
-import java.util.List;
 
 import logger.CRBLogger;
+import se.curtrunebylund.projects.R;
+import se.curtrunebylund.projects.art.ArtWorkListActivity;
 import se.curtrunebylund.projects.db.DBSQLite;
 import se.curtrunebylund.projects.util.Debug;
-import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.db.DBAdmin;
-import se.curtrunebylund.projects.db.GetAllGrandChildrenThread;
-import se.curtrunebylund.projects.db.Result;
-import se.curtrunebylund.projects.classes.Task;
-import se.curtrunebylund.projects.art.ArtWorkListActivity;
 import se.curtrunebylund.projects.util.ProjectsLogger;
 
-public class SplashActivity extends AppCompatActivity implements GetAllGrandChildrenThread.Callback {
-    private TextView textView_art;
-    private TextView textView_projects;
-    private TextView textView_infinity;
+public class SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +33,9 @@ public class SplashActivity extends AppCompatActivity implements GetAllGrandChil
             e.printStackTrace();
         }
         Debug.log("SplashActivity.onCreate() infinity branch");
-        textView_art = findViewById(R.id.textView_splash_art);
-        textView_projects = findViewById(R.id.textView_splash_projects);
-        textView_infinity = findViewById(R.id.textView_splash_infinity);
+        TextView textView_art = findViewById(R.id.textView_splash_art);
+        TextView textView_projects = findViewById(R.id.textView_splash_projects);
+        TextView textView_infinity = findViewById(R.id.textView_splash_infinity);
         textView_art.setOnClickListener(view -> startActivity(new Intent(this, ArtWorkListActivity.class)));
         textView_infinity.setOnClickListener(view -> startActivity(new Intent(this, InfinityActivity.class)));
         textView_projects.setOnClickListener(view -> startActivity(new Intent(this, ProjectListActivity.class)));
@@ -52,17 +43,8 @@ public class SplashActivity extends AppCompatActivity implements GetAllGrandChil
 
 
     }
-    private void forOnceInMyLife(){
+    private void forOnceInMyLife() {
         ProjectsLogger.log("SplashActivity.forOnceInMyLife()");
-        DBAdmin.createLogTable(this);
-
-/*        DBSQLite dbsqLite = new DBSQLite(this);
-        dbsqLite.printInfo();
-        try {
-            DBAdmin.addColumnsToAttempts(this);
-        }catch(Exception e){
-            CRBLogger.log(e.toString());
-        }*/
     }
 
     @Override
@@ -86,25 +68,13 @@ public class SplashActivity extends AppCompatActivity implements GetAllGrandChil
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     *  a hack i suppose, android studio needs the database to open to able to inspect it
+     *  whatever, it's called from dropdown menu anyways
+     */
     private void openDb() {
         DBSQLite db = new DBSQLite(this);
         SQLiteDatabase database = db.getReadableDatabase();
     }
 
-    /**
-     * TEMP, converting dbone.commments,tasks (grand children) to local.sqlite.attemmpts
-     * @param tasks
-     * @param result
-     */
-    @Override
-    public void onGetAllGrandChildrenDone(List<Task> tasks, Result result) {
-        Debug.log("SplashActivity.onGetAllGrandChildrenDone(List<Task>, Result");
-        if( !result.isOK()) {
-            Debug.showMessage(this, result.toString());
-            return;
-        }
-        Debug.showMessage(this, "will copy tasks to attempts");
-        DBAdmin.copyTasksToDBLocal(tasks, this);
-        Debug.showMessage(this, "done copying");
-    }
 }

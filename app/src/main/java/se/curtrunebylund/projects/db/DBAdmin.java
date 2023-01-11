@@ -14,34 +14,8 @@ import se.curtrunebylund.projects.classes.Task;
 import util.Converter;
 
 public class DBAdmin {
-    public static final String CREATE_MUSIC_TABLE = "CREATE TABLE attempts" +
-            "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "parent_id INTEGER, " +
-            "heading TEXT," +
-            "description TEXT,"+
-            "comment TEXT, " +
-            "created INTEGER," +
-            "updated INTEGER," +
-            "grade INTEGER," +
-            ")";
-
-    public static final String ADD_DURATION_TO_ATTEMPTS = "ALTER TABLE attempts ADD COLUMN duration INTEGER";
-    public static final String ADD_JSON_TO_ATTEMPTS = "ALTER TABLE attempts ADD COLUMN json TEXT";
-    public static final String CREATE_INFINITY_TABLE = "CREATE TABLE infinity" +
-            "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "parent_id INTEGER, " +
-            "heading TEXT," +
-            "description TEXT,"+
-            "comment TEXT, " +
-            "tags TEXT, " +
-            "content TEXT, " +
-            "data1 TEXT, " +
-            "created INTEGER," +
-            "updated INTEGER," +
-            "integer1 INTEGER," +
-            "type INTEGER, " +
-            "grade INTEGER" +
-            ")";
+    public static final String CREATE_TABLE_ATTEMPTS = "CREATE TABLE attempts(id INTEGER PRIMARY KEY AUTOINCREMENT,parent_id INTEGER, heading TEXT, description TEXT, comment TEXT, created INTEGER, updated INTEGER, grade INTEGER, state INTEGER, duration INTEGER, json TEXT, type INTEGER)";
+    public static final String CREATE_TABLE_INFINITY = "CREATE TABLE infinity (\tid integer PRIMARY KEY autoincrement, parent_id INTEGER , heading TEXT ,\tdescription text , tags TEXT,  duration INTEGER,  created INTEGER,  updated INTEGER ,\tstate INTEGER ,  type INTEGER)";
     public static final String CREATE_ARTWORKS_TABLE = "CREATE TABLE artworks" +
             "(id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "description TEXT, " +
@@ -72,22 +46,7 @@ public class DBAdmin {
         item = PersistInfinity.add(item, context);
         Debug.log(item);
     }
-    public static void addColTypeToAttemptTable(Context context){
-        log("addColTypeToAttemptTable()");
-        String sql = String.format("ALTER TABLE attempts ADD type INTEGER");
-        DBSQLite dbsqLite= new DBSQLite(context);
-        dbsqLite.executeSQL(sql);
 
-    }
-
-    public static void addColumnsToAttempts(Context context) {
-        log("DBAdmin.addColumnsToAttempts()");
-        DBSQLite dbsqLite = new DBSQLite(context);
-        dbsqLite.executeSQL(ADD_DURATION_TO_ATTEMPTS);
-        dbsqLite.executeSQL(ADD_JSON_TO_ATTEMPTS);
-        dbsqLite.close();
-        log("...columns added?");
-    }
 
     public void createArtworkTable(Context context){
         Debug.log("DBStuff.createArtworkTable()");
@@ -101,12 +60,7 @@ public class DBAdmin {
         dbsqLite.executeSQL(CREATE_LOG_TABLE);
         log("table created ?");
     }
-    public static void createMusicTable(Context context){
-        Debug.log("DBStuff.createMusicTable()");
-        DBSQLite dbsqLite = new DBSQLite(context);
-        dbsqLite.executeSQL(CREATE_MUSIC_TABLE);
-        //dbsqLite.executeSQL(CREATE_REF_PICTURES_TABLE);
-    }
+
     public static final String  CREATE_REF_PICTURES_TABLE = "CREATE TABLE ref_pics" +
             "( id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "parent_id INTEGER, " +

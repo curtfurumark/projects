@@ -1,10 +1,8 @@
 package se.curtrunebylund.projects.activities;
 
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
+import static logger.CRBLogger.log;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -14,35 +12,31 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import static logger.CRBLogger.*;
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDateTime;
 
 import item.State;
 import item.Type;
+import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.classes.Attempt;
 import se.curtrunebylund.projects.classes.Project;
 import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.db.PersistDBOne;
 import se.curtrunebylund.projects.db.PersistSQLite;
 import se.curtrunebylund.projects.help.Constants;
-import se.curtrunebylund.projects.util.MyTimer;
 import se.curtrunebylund.projects.projects.Grade;
 import se.curtrunebylund.projects.util.Debug;
-import se.curtrunebylund.projects.R;
+import se.curtrunebylund.projects.util.MyTimer;
 import util.Converter;
 
 public class MusicSessionActivity extends AppCompatActivity implements MyTimer.Callback {
-    //private EditText editText_task_heading;
-    private TextView textView_task_heading;
-    private TextView textView_heading;
+    private EditText editText_heading;
     private TextView textView_updated;
-    private EditText   editText_comment;
+    private EditText  editText_comment;
     private EditText editText_assignment;
-    private TextView textView_repetitions;
     private Button button_repetitions;
     private Button button_timer;
-    private Button button_reset;
     private TextView textView_timer;
     private Integer n_repetions = 0;
     private TextView textView_id;
@@ -53,7 +47,6 @@ public class MusicSessionActivity extends AppCompatActivity implements MyTimer.C
     private Project project;
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,42 +54,41 @@ public class MusicSessionActivity extends AppCompatActivity implements MyTimer.C
         Debug.log("MusicSessionActivity.onCreate()");
         setTitle("music session");
 
-        textView_task_heading = findViewById(R.id.textView_musicSession_task_heading);
-        textView_heading = findViewById(R.id.textView_musicSession_heading);
+        //private EditText editText_task_heading;
+        TextView textView_task_heading = findViewById(R.id.textView_musicSession_task_heading);
+        editText_heading = findViewById(R.id.editText_musicSession_heading);
         textView_timer = findViewById(R.id.textView_musicSession_timer);
         editText_comment = findViewById(R.id.editText_musicSession_comment);
-        button_reset = findViewById(R.id.button_musicSession_reset);
+        Button button_lap = findViewById(R.id.button_musicSession_lap);
         button_timer = findViewById(R.id.button_musicSession_timer);
         editText_assignment = findViewById(R.id.editText_musicSession_assignment);
-        button_reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                timer.stop();
-                textView_timer.setText(Converter.formatMilliSeconds(0));
-                button_timer.setText("start");
-                setTimerButtons();
+        button_lap.setOnClickListener(view -> {
+            //timer.stop();
+            startLap();
+            //textView_timer.setText(Converter.formatMilliSeconds(0));
+            //button_timer.setText("start");
+            //setTimerButtons();
+        });
+        button_timer.setOnClickListener(view -> {
+            switch(timer.getState()){
+                case  STOPPED:
+                    timer.start();
+                    button_timer.setText("pause");
+                    break;
+                case RUNNING:
+                    timer.pause();
+                    button_timer.setText("resume");
+                    break;
+                case PAUSED:
+                    timer.resume();
+                    button_timer.setText("pause");
             }
         });
-        button_timer.setOnClickListener(new View.OnClickListener() {
+        button_timer.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
-                switch(timer.getState()){
-                    case  STOPPED:
-                        timer.start();
-                        button_timer.setText("pause");
-                        button_reset.setEnabled(false);
-                        break;
-                    case RUNNING:
-                        timer.pause();
-                        //timerState = TimerState.PAUSED;
-                        button_reset.setEnabled(true);
-                        button_timer.setText("resume");
-                        break;
-                    case PAUSED:
-                        timer.resume();
-                        button_timer.setText("pause");
-                        button_reset.setEnabled(false);
-                }
+            public boolean onLongClick(View view) {
+                timer.stop();
+                return true;
             }
         });
 
@@ -118,11 +110,17 @@ public class MusicSessionActivity extends AppCompatActivity implements MyTimer.C
             textView_task_heading.setText(task.getHeading());
             session = (Attempt) intent.getSerializableExtra(Constants.INTENT_SERIALIZED_ATTEMPT);
             setTitle(String.format("%s, (%d)", session.getHeading(), session.getId()));
-            textView_heading.setText(session.getHeading());
+            editText_heading.setText(session.getHeading());
             project = (Project) intent.getSerializableExtra(Constants.INTENT_PROJECT);
 
         }
     }
+
+    private void startLap() {
+        log("MusicSessionActivity.startLap()");
+        int startSecs = timer.getElapsedTime();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -142,7 +140,7 @@ public class MusicSessionActivity extends AppCompatActivity implements MyTimer.C
 
     private void saveSession() {
         Debug.log("MusicSessionActivity.saveSession()");
-        String heading = textView_heading.getText().toString();
+        String heading = editText_heading.getText().toString();
         if ( heading.isEmpty()){
             Debug.showMessage(this, "a heading please");
             return;
@@ -155,7 +153,7 @@ public class MusicSessionActivity extends AppCompatActivity implements MyTimer.C
         session.setDuration(timer.getElapsedTime());
         session.setType(Type.SESSION_MUSIC);
         session.setState(State.DONE);
-        textView_heading.setHint("heading");
+        editText_heading.setHint("heading");
         editText_comment.setHint("comment");
         PersistSQLite.update(session, this);
         PersistDBOne.touch(project, task);
@@ -165,33 +163,17 @@ public class MusicSessionActivity extends AppCompatActivity implements MyTimer.C
         intent.putExtra(Constants.INTENT_PROJECT, project);
         startActivity(intent);
     }
-    public void onRadioButtonClick(View view) {
-        Debug.log("MusicSessionActivity.onRadioButtonClick(View)");
-        int id = view.getId();
-        RadioButton radioButton = findViewById(id);
-        String str_grade = radioButton.getText().toString();
-        grade = Grade.valueOf(str_grade.toUpperCase());
-/*        if ( mode.equals(SessionActivity.Mode.EDIT)) {
-            current_attempt.setGrade(Grade.valueOf(str_grade.toUpperCase()));
-            current_attempt.setUpdated(LocalDateTime.now());
-            current_attempt.setState(State.DONE);
-            PersistSQLite.update(current_attempt, this);
-        }*/
-    }
 
     private void setTimerButtons() {
-        log("MusicSesssionActivity.setTimerButtons() " , timer.getState().toString());
+        log("MusicSessionActivity.setTimerButtons() " , timer.getState().toString());
         switch(timer.getState()){
             case RUNNING:
-                button_reset.setEnabled(false);
                 button_timer.setText("pause");
                 break;
             case PAUSED:
-                button_reset.setEnabled(true);
                 button_timer.setText("resume");
                 break;
             case STOPPED:
-                button_reset.setEnabled(false);
                 button_timer.setText("start");
         }
     }

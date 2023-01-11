@@ -30,16 +30,6 @@ public class DBSQLite extends SQLiteOpenHelper {
     private SQLiteDatabase db;
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "projects.db";
-    public static final String CREATE_MUSIC_TABLE = "CREATE TABLE attempts" +
-            "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "parent_id INTEGER, " +
-            "heading TEXT," +
-            "description TEXT,"+
-            "comment TEXT, " +
-            "created INTEGER," +
-            "updated INTEGER," +
-            "grade INTEGER," +
-            ")";
 
     public DBSQLite(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -48,7 +38,8 @@ public class DBSQLite extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         log("DBSQLite.onCreate()");
-        //sqLiteDatabase.execSQL(DBStuff.CREATE_INFINITY_TABLE);
+        sqLiteDatabase.execSQL(DBAdmin.CREATE_TABLE_ATTEMPTS);
+        sqLiteDatabase.execSQL(DBAdmin.CREATE_TABLE_INFINITY);
         log("...after create table attempts");
     }
 
@@ -69,13 +60,7 @@ public class DBSQLite extends SQLiteOpenHelper {
         return item;
     }
 
-    public String getDBPath(){
-        log("DBSQLite.getDBPath()");
-        db = this.getReadableDatabase();
-        String path = db.getPath();
-        System.out.println("ccccccccccccccccccccccccccPATH: " + path);
-        return path;
-    }
+
 
     public void delete(Attempt attempt) {
         log("DBProjects.delete(Attempt) ");
@@ -156,6 +141,13 @@ public class DBSQLite extends SQLiteOpenHelper {
         db.close();
         return items;
     }
+    public String getDBPath(){
+        log("DBSQLite.getDBPath()");
+        db = this.getReadableDatabase();
+        String path = db.getPath();
+        db.close();
+        return path;
+    }
 
     public ListItem getItem(long id) {
         System.out.printf("DBSQLite.getItem(%d)\n", id);
@@ -206,6 +198,15 @@ public class DBSQLite extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return tableNames;
+    }
+    public boolean hasChild(long id) {
+        Debug.log("DBSQLite.hasChild()");
+        String query = String.format(Locale.getDefault(),"SELECT count() where parent_id = %d", id);
+        db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Debug.log(cursor);
+        cursor.close();
+        return false;
     }
 
     public ArtWork insert(ArtWork artWork) {
@@ -281,15 +282,7 @@ public class DBSQLite extends SQLiteOpenHelper {
         return res;
     }
 
-    public boolean hasChild(long id) {
-        Debug.log("DBSQLite.hasChild()");
-        String query = String.format(Locale.getDefault(),"SELECT count() where parent_id = %d", id);
-        db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        Debug.log(cursor);
-        cursor.close();
-        return false;
-    }
+
 
     public void printInfo() {
         db = this.getReadableDatabase();
