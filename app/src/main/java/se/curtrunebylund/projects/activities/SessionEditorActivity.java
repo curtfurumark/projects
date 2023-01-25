@@ -4,7 +4,6 @@ package se.curtrunebylund.projects.activities;
 import static se.curtrunebylund.projects.util.ProjectsLogger.log;
 
 import android.content.Intent;
-import android.os.Build;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,28 +14,28 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import item.State;
 import item.Type;
 import logger.CRBLogger;
 import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.classes.Attempt;
+import se.curtrunebylund.projects.classes.Session;
 import se.curtrunebylund.projects.classes.Project;
 import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.db.PersistDBOne;
 import se.curtrunebylund.projects.db.PersistSQLite;
 import se.curtrunebylund.projects.help.Constants;
-import se.curtrunebylund.projects.util.MyTimer;
+import se.curtrunebylund.projects.util.Kronos;
 import se.curtrunebylund.projects.util.ProjectsLogger;
 import util.Converter;
 
-public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Callback {
+public class SessionEditorActivity extends AppCompatActivity implements Kronos.Callback {
 
     private EditText editText_heading;
     private EditText editText_description;
@@ -47,7 +46,7 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
 
     private TextView textView_id;
     private TextView textView_parent_id;
-    private TextView textView_duration;
+    private TextView editText_duration;
     private Button button_timer;
     private Spinner spinner_type;
     private Spinner spinner_state;
@@ -55,8 +54,8 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
     private State state = State.PENDING;
     private Task task;
     private Project project;
-    private List<Attempt> attempts = new ArrayList<>();
-    private Attempt item;
+    private final List<Session> sessions = new ArrayList<>();
+    private Session item;
 
     @Override
     public void onTimerTick(int secs) {
@@ -73,14 +72,14 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
     private TimerState timer_state = TimerState.STOPPED;
     private Mode mode = Mode.CREATE;
     //private TimerState timerState = TimerState.STOPPED;
-    MyTimer timer;
+    Kronos timer;
 
 
     @Override
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_editor);
-        setTitle("item editor");
+        setContentView(R.layout.session_editor);
+        setTitle("session editor");
         CRBLogger.log("ItemEditorActivity.onCreate()");
         editText_heading = findViewById(R.id.editText_itemEditor_heading);
         editText_description = findViewById(R.id.editText_itemEditor_description);
@@ -90,7 +89,7 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
         textView_updated = findViewById(R.id.editText_itemEditor_updated);
         textView_id = findViewById(R.id.textView_itemEditor_id);
         textView_parent_id = findViewById(R.id.textView_itemEditor_parent_id);
-        textView_duration = findViewById(R.id.textView_itemEditor_duration);
+        editText_duration = findViewById(R.id.editText_itemEditor_duration);
         spinner_type = findViewById(R.id.spinner_itemEditor_type);
         spinner_state = findViewById(R.id.spinner_itemEditor_state);
         button_timer = findViewById(R.id.button_itemEditor_timer);
@@ -98,19 +97,18 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
         button_timer.setOnLongClickListener(view -> {
             timer_state = TimerState.STOPPED;
             button_timer.setText("start");
-            textView_duration.setText("00:00:00");
+            editText_duration.setText("00:00:00");
             timer.reset();
             return true;
         });
         initSpinnerType(Type.PENDING);
         initSpinnerState(State.PENDING);
-        timer = MyTimer.getInstance(this, this);
-        timer.setTextView(textView_duration);
+        timer = Kronos.getInstance(this);
 
         Intent intent = getIntent();
         if( intent.getBooleanExtra(Constants.INTENT_EDIT_ITEM, false)){
             log("ItemEditorActivity INTENT_EDIT_ITEM");
-            item = (Attempt) intent.getSerializableExtra(Constants.INTENT_SERIALIZED_ATTEMPT);
+            item = (Session) intent.getSerializableExtra(Constants.INTENT_SERIALIZED_ATTEMPT);
             ProjectsLogger.log(item);
             task = (Task) intent.getSerializableExtra(Constants.INTENT_TASK);
             project = (Project) intent.getSerializableExtra(Constants.INTENT_PROJECT);
@@ -144,7 +142,7 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
         spinner_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ItemEditorActivity.this.type = Type.values()[position];
+                SessionEditorActivity.this.type = Type.values()[position];
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -162,7 +160,7 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
         spinner_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ItemEditorActivity.this.state = State.values()[position];
+                SessionEditorActivity.this.state = State.values()[position];
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -171,17 +169,19 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
         });
     }
 
-    private void setUI(Attempt item) {
+    private void setUI(Session item) {
         log("ItemEditorActivity.setUI(Item)");
         editText_heading.setText(item.getHeading());
         editText_description.setText(item.getDescription());
         editText_comment.setText(item.getComment());
         editText_tags.setText(item.getTags());
-        textView_created.setText(Converter.epochToFormattedDateTime(item.getCreated()));
-        textView_updated.setText(Converter.epochToFormattedDateTime(item.getUpdated()));
+        String created = String.format(Locale.getDefault(), "created: %s",Converter.epochToFormattedDateTime(item.getCreated()));
+        textView_created.setText(created);
+        String updated = String.format(Locale.getDefault(), "updated %s",Converter.epochToFormattedDateTime(item.getUpdated()));
+        textView_updated.setText(updated);
         textView_id.setText(String.valueOf(item.getId()));
         textView_parent_id.setText(String.valueOf(item.getParent_id()));
-        textView_duration.setText(Converter.formatSeconds(item.getDuration()));
+        editText_duration.setText(Converter.formatSeconds(item.getDuration()));
         spinner_type.setSelection(item.getType().ordinal());
         spinner_state.setSelection(item.getState().ordinal());
     }
@@ -195,12 +195,13 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
         return true;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public boolean onOptionsItemSelected(@androidx.annotation.NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.icon_home:
-                Intent intent =  new Intent(this, AttemptListActivity.class);
+            case R.id.delete_attempt:
+                //PersistSQLite.delete(current_attempt, this);
+                Intent intent =  new Intent(this, SessionListActivity.class);
                 intent.putExtra(Constants.INTENT_TASK, task);
                 intent.putExtra(Constants.INTENT_SHOW_TASKS, true);
                 intent.putExtra(Constants.INTENT_PROJECT, project);
@@ -212,14 +213,6 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
             case R.id.intent_counter:
                 startActivity(new Intent(this, CounterActivity.class));
                 break;
-            case R.id.delete_attempt:
-                //PersistSQLite.delete(current_attempt, this);
-                Intent intent1 =  new Intent(this, AttemptListActivity.class);
-                intent1.putExtra(Constants.INTENT_TASK, task);
-                intent1.putExtra(Constants.INTENT_SHOW_TASKS, true);
-                intent1.putExtra(Constants.INTENT_PROJECT, project);
-                startActivity(intent1);
-                return true;
             case R.id.icon_save_attempt:
                 saveAttempt();
                 return true;
@@ -239,7 +232,7 @@ public class ItemEditorActivity extends AppCompatActivity implements MyTimer.Cal
         item.setDuration(timer.getElapsedTime());
         PersistSQLite.update(item, this);
         PersistDBOne.touch(project, task);
-        Intent intent = new Intent(this, AttemptListActivity.class);
+        Intent intent = new Intent(this, SessionListActivity.class);
         intent.putExtra(Constants.INTENT_TASK, task);
         intent.putExtra(Constants.INTENT_PROJECT, project);
         startActivity(intent);

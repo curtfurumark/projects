@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/purple_500"
-    tools:context=".activities.ItemEditorActivity">
+    tools:context=".activities.SessionEditorActivity">
 
     <TextView
         android:id="@+id/textView_musicSession_task_heading"
@@ -15,10 +15,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="#009688"
-        android:hint="task heading"
-        android:minHeight="48dp"
         android:textColor="@color/purple_700"
-        android:textSize="24sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,8 +29,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:hint="heading"
-        android:minHeight="48dp"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView_musicSession_task_heading" />
@@ -50,38 +47,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_musicSession_heading" />
 
-    <Button
-        android:id="@+id/button_musicSession_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
-        android:text="start"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_musicSession_assignment" />
-
-    <TextView
-        android:id="@+id/textView_musicSession_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="8dp"
-        android:text="00:00:00"
-        android:inputType="time"
-        android:textSize="28sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_musicSession_assignment" />
-
-    <Button
-        android:id="@+id/button_musicSession_lap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:text="lap"
-        app:layout_constraintEnd_toStartOf="@+id/textView_musicSession_timer"
-        app:layout_constraintStart_toEndOf="@+id/button_musicSession_timer"
-        app:layout_constraintTop_toBottomOf="@+id/editText_musicSession_assignment" />
-
     <EditText
         android:id="@+id/editText_musicSession_assignment"
         android:layout_width="0dp"
@@ -96,14 +61,77 @@
         app:layout_constraintTop_toBottomOf="@+id/editText_musicSession_comment" />
 
     <Button
-        android:id="@+id/button_musicSession_repitition"
+        android:id="@+id/button_musicSession_timer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="start"
+        app:layout_constraintEnd_toStartOf="@+id/button_musicSession_lap"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_musicSession_assignment" />
+
+    <Button
+        android:id="@+id/button_musicSession_lap"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="lap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_musicSession_timer"
+        app:layout_constraintTop_toBottomOf="@+id/editText_musicSession_assignment" />
+
+    <TextView
+        android:id="@+id/textView_musicSession_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:inputType="time"
+        android:text="00:00:00"
+        android:textSize="28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_musicSession_timer" />
+
+    <TextView
+        android:id="@+id/textView_musicSession_current_lap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:inputType="time"
+        android:text="00:00:00"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_musicSession_lap" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_musicSession"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/button_musicSession_repitition"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_musicSession_timer" />
+
+    <Button
+        android:id="@+id/button_musicSession_repitition"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:text="hit me"
         android:textSize="48sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_musicSession_assignment" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

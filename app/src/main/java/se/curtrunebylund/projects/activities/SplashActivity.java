@@ -1,5 +1,7 @@
 package se.curtrunebylund.projects.activities;
 
+import static logger.CRBLogger.log;
+
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import logger.CRBLogger;
 import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.art.ArtWorkListActivity;
 import se.curtrunebylund.projects.db.DBSQLite;
+import se.curtrunebylund.projects.help.Constants;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.util.ProjectsLogger;
 
@@ -44,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
 
     }
     private void forOnceInMyLife() {
-        ProjectsLogger.log("SplashActivity.forOnceInMyLife()");
+        log("SplashActivity.forOnceInMyLife()");
     }
 
     @Override
@@ -63,9 +66,19 @@ public class SplashActivity extends AppCompatActivity {
             case R.id.splash_open_db:
                 openDb();
                 break;
+            case R.id.splash_start_music_session:
+                startMusicSessionActivity();
+                break;
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startMusicSessionActivity() {
+        log("startMusicSessionActivity");
+        Intent intent = new Intent(this, MusicSessionActivity.class);
+        intent.putExtra(Constants.INTENT_BLANK_MUSIC_SESSION, true);
+        startActivity(intent);
     }
 
     /**

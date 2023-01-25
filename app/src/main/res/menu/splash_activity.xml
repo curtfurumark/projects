@@ -4,4 +4,6 @@
     android:title="for once in my life"/>
     <item android:id="@+id/splash_open_db"
         android:title="open database"/>
+    <item android:id="@+id/splash_start_music_session"
+        android:title="start music session"/>
 </menu>

@@ -1,5 +1,8 @@
 package se.curtrunebylund.projects.activities;
 
+import static logger.CRBLogger.log;
+import static logger.CRBLogger.logError;
+
 import android.content.Intent;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,7 +42,7 @@ public class TaskListActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_list_activity);
         setTitle("taskListActivity");
-        Debug.log("TaskListActivity.onCreate()");
+        log("TaskListActivity.onCreate(Bundle)");
         TextView textView_project_heading = findViewById(R.id.textView_taskListActivity_heading);
         recyclerView_todo = findViewById(R.id.recyclerView_taskListActivity);
         textView_project_heading.setOnClickListener(view -> {
@@ -50,7 +53,7 @@ public class TaskListActivity extends AppCompatActivity implements
         });
         Intent intent = getIntent();
         if( intent.getBooleanExtra(Constants.INTENT_SHOW_TASKS, false)){
-            Debug.log("INTENT_SHOW_TASKS");
+            log("INTENT_SHOW_TASKS");
             project =  (Project) intent.getSerializableExtra(Constants.INTENT_PROJECT);
             String heading = String.format(Locale.getDefault(),"%s (id: %d)", project.getHeading(), project.getId());
             textView_project_heading.setText(heading);
@@ -60,7 +63,7 @@ public class TaskListActivity extends AppCompatActivity implements
     }
 
     private void initRecycler(List<Task> tasks){
-        Debug.log("TaskListActivity.initRecycler(List<Task>)");
+        log("TaskListActivity.initRecycler(List<Task>)");
         taskAdapter = new TaskAdapter(tasks, this, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView_todo.setLayoutManager(layoutManager);
@@ -76,12 +79,11 @@ public class TaskListActivity extends AppCompatActivity implements
     }
     @Override
     public void onGetTasksDone(List<Task> taskList, Result result) {
-        Debug.log("TaskListActivity.onGetTasksDone(List<Task>, Result);");
+        log("TaskListActivity.onGetTasksDone(List<Task>, Result);");
         if(taskList == null){
-            Debug.log("\ttasklist is null??? wtf");
+            logError("\ttasklist is null??? wtf");
         }
         Debug.log(result);
-        //Debug.logTaskList(taskList);
         if( result.isOK() && taskList != null){
             this.taskList = taskList;
             sortTaskListUpdated();
@@ -117,9 +119,10 @@ public class TaskListActivity extends AppCompatActivity implements
 
     @Override
     public void onItemClick(Task task) {
-        Debug.log("TaskListActivity.onItemClick(Task() ");
+        log("TaskListActivity.onItemClick(Task() ");
         Debug.log(task);
-        Intent intent = new Intent(this, AttemptListActivity.class);
+        Intent intent = new Intent(this, SessionListActivity.class);
+        intent.putExtra(Constants.INTENT_SHOW_SESSIONS, true);
         intent.putExtra(Constants.INTENT_TASK, task);
         intent.putExtra(Constants.INTENT_PROJECT, project);
         startActivity(intent);
@@ -127,7 +130,7 @@ public class TaskListActivity extends AppCompatActivity implements
 
     @Override
     public void onCheckBoxChecked(Task task, boolean checked) {
-        Debug.log("TaskListActivity.onCheckBoxChecked()");
+        log("TaskListActivity.onCheckBoxChecked()");
         task.setState(checked ? State.DONE: State.TODO);
         PersistDBOne.update(task, this, this);
     }
@@ -139,7 +142,7 @@ public class TaskListActivity extends AppCompatActivity implements
         }
     }
     private void sortTaskListUpdated() {
-        Debug.log("TaskListActivity.sortTaskList()");
+        log("TaskListActivity.sortTaskList()");
         taskList.sort((task1, task2) -> Long.compare(task2.compare(), task1.compare()));
     }
 }

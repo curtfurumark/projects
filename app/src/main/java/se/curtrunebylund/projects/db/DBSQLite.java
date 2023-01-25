@@ -14,14 +14,12 @@ import java.util.Locale;
 import static se.curtrunebylund.projects.util.ProjectsLogger.*;
 
 
+import se.curtrunebylund.projects.classes.Session;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.art.ArtWork;
 import se.curtrunebylund.projects.infinity.ListItem;
-import se.curtrunebylund.projects.classes.Attempt;
 import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.util.ProjectsLogger;
-
-import static se.curtrunebylund.projects.util.ProjectsLogger.*;
 
 public class DBSQLite extends SQLiteOpenHelper {
     private static final String TABLE_ATTEMPTS = "attempts";
@@ -62,10 +60,10 @@ public class DBSQLite extends SQLiteOpenHelper {
 
 
 
-    public void delete(Attempt attempt) {
+    public void delete(Session session) {
         log("DBProjects.delete(Attempt) ");
-        Debug.log(attempt);
-        String where_clause = String.format(Locale.getDefault(),"id = %d", attempt.getId());
+        Debug.log(session);
+        String where_clause = String.format(Locale.getDefault(),"id = %d", session.getId());
         log("...where_clause: ", where_clause);
         db = this.getWritableDatabase();
         int rows_deleted = db.delete(TABLE_ATTEMPTS, where_clause, null);
@@ -105,7 +103,7 @@ public class DBSQLite extends SQLiteOpenHelper {
         log("...end of executeSQL()");
     }
 
-    public List<Attempt> getAttempts() {
+    public List<Session> getAttempts() {
         Debug.log("DBProjects.getAttempts()");
         db = this.getReadableDatabase();
         String query = "SELECT * from attempts";
@@ -117,7 +115,7 @@ public class DBSQLite extends SQLiteOpenHelper {
      * @return list of attempts, believe it or not
      */
 
-    public List<Attempt> getAttempts(long parent_id) {
+    public List<Session> getAttempts(long parent_id) {
         Debug.log("DBProjects.getAttempts(long parent_id) parent_id: " + parent_id);
         String query = String.format(Locale.getDefault(),"SELECT * from attempts  where parent_id = %d", parent_id);
         return queryAttempts(query);
@@ -218,32 +216,32 @@ public class DBSQLite extends SQLiteOpenHelper {
         return artWork;
     }
 
-    public Attempt insert(Attempt attempt) {
-        Debug.log("DBProjects.insert(Attempt) " + attempt.getHeading());
+    public Session insert(Session session) {
+        Debug.log("DBProjects.insert(Attempt) " + session.getHeading());
         db = this.getWritableDatabase();
-        long id = db.insert(TABLE_ATTEMPTS, null, attempt.getContentValues());
-        attempt.setId(id);
+        long id = db.insert(TABLE_ATTEMPTS, null, session.getContentValues());
+        session.setId(id);
         db.close();
-        return attempt;
+        return session;
     }
 
-    public List<Attempt> insertAttempts(List<Attempt> attempts) {
-        Debug.log("DBSQLite.insertAttempts(List<Attempt>) size: " + attempts.size());
+    public List<Session> insertAttempts(List<Session> sessions) {
+        Debug.log("DBSQLite.insertAttempts(List<Attempt>) size: " + sessions.size());
         db = this.getWritableDatabase();
-        for (Attempt attempt : attempts) {
-            long id = db.insert(TABLE_ATTEMPTS, null, attempt.getContentValues());
-            attempt.setId(id);
-            Debug.log(attempt);
+        for (Session session : sessions) {
+            long id = db.insert(TABLE_ATTEMPTS, null, session.getContentValues());
+            session.setId(id);
+            Debug.log(session);
         }
         db.close();
-        return attempts;
+        return sessions;
     }
 
 
 
-    public List<Attempt> queryAttempts(String query) {
+    public List<Session> queryAttempts(String query) {
         Debug.log("DBProjects.queryAttempts(String query ) " + query);
-        List<Attempt> attempts = new ArrayList<>();
+        List<Session> sessions = new ArrayList<>();
         db = this.getReadableDatabase();
         Debug.log("...query: " + query);
         Cursor cursor = db.rawQuery(query, null);
@@ -251,21 +249,21 @@ public class DBSQLite extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             Debug.log("...cursor move to first");
             do {
-                Attempt attempt = new Attempt(cursor);
-                attempts.add(attempt);
+                Session session = new Session(cursor);
+                sessions.add(session);
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
-        return attempts;
+        return sessions;
     }
 
-    public void update(Attempt attempt) {
+    public void update(Session session) {
         log("DBLocal.update(Attempt)");
-        String whereClause = String.format("id = %d", attempt.getId());
+        String whereClause = String.format("id = %d", session.getId());
         db = this.getWritableDatabase();
-        ProjectsLogger.log(attempt.getContentValues());
-        int res = db.update(TABLE_ATTEMPTS, attempt.getContentValues(), whereClause, null);
+        ProjectsLogger.log(session.getContentValues());
+        int res = db.update(TABLE_ATTEMPTS, session.getContentValues(), whereClause, null);
         log("...res: " ,res);
         db.close();
     }

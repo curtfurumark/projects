@@ -15,7 +15,7 @@ public class ListItem implements Serializable {
     private long id;
     private long parent_id;
     private long duration;
-    private Type type = Type.ATTEMPT;
+    private Type type = Type.PENDING;
     private State state = State.PENDING;
 
     private String description;
@@ -50,7 +50,7 @@ public class ListItem implements Serializable {
         this.state = State.TODO;
         this.parent_id = 0;
         this.duration = 0;
-        this.type = Type.DEFAULT;
+        this.type = Type.PENDING;
     }
 
     public ContentValues getContentValues(){

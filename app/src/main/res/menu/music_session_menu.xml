@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="save_task"
+        android:id="@+id/icon_save_project"
+        android:icon="@drawable/ic_baseline_save_24"
+        app:showAsAction="always"/>
+    <item android:title="add assignment"
+        android:icon="@drawable/ic_baseline_add_24"
+        app:showAsAction="always"
+        android:id="@+id/musicSession_new_assignment"/>
+    <item android:title="home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:id="@+id/musicSession_home"
+        app:showAsAction="always"/>
+    <item android:id="@+id/musicSession_assignment_check"
+        android:title="assignment  done" />
+    <item android:id="@+id/musicSession_reload_kronos"
+        android:title="reload kronos"/>
+</menu>

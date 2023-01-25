@@ -1,6 +1,5 @@
 package se.curtrunebylund.projects.util;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -12,14 +11,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import logger.CRBLogger;
+import se.curtrunebylund.projects.classes.Session;
 import se.curtrunebylund.projects.db.Result;
 import se.curtrunebylund.projects.infinity.ListItem;
 import se.curtrunebylund.projects.classes.Task;
-import se.curtrunebylund.projects.classes.Attempt;
 import se.curtrunebylund.projects.art.ArtWork;
 
 public class Debug {
@@ -88,9 +85,9 @@ public class Debug {
         }
     }
 
-    public static void log(Attempt attempt) {
+    public static void log(Session session) {
         Debug.log("Debug.log(Attempt)");
-        Debug.log(attempt.toString());
+        Debug.log(session.toString());
     }
 
     public static void log(Cursor cursor) {
@@ -104,16 +101,16 @@ public class Debug {
         }
     }
 
-    public static void logAttempts(List<Attempt> attempts, boolean log_all) {
+    public static void logAttempts(List<Session> sessions, boolean log_all) {
         Debug.log("Debug.logAttempts(List<Attempt> boolean log_all = " + log_all);
-        Debug.log("...number of attempts: " + attempts.size());
+        Debug.log("...number of attempts: " + sessions.size());
         if ( log_all) {
-            for (Attempt attempt : attempts) {
-                log(attempt);
+            for (Session session : sessions) {
+                log(session);
             }
         }else{
-            for ( int i = 0; i < attempts.size(); i+= 10){
-                log(attempts.get(i));
+            for (int i = 0; i < sessions.size(); i+= 10){
+                log(sessions.get(i));
             }
         }
     }

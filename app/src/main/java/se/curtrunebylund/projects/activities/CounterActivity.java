@@ -16,8 +16,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import static logger.CRBLogger.*;
-
 import logger.CRBLogger;
 import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.help.Constants;
@@ -70,7 +68,7 @@ public class CounterActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.icon_home:
-                Intent intent = new Intent(this, AttemptListActivity.class);
+                Intent intent = new Intent(this, SessionListActivity.class);
                 //intent.putExtra(ProjectManager.INTENT_PROJECT_ID, task.getProjectID());
                 startActivity(intent);
                 break;

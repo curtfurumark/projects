@@ -6,10 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.Map;
 import java.util.Set;
 
-import item.State;
-import item.Type;
 import logger.CRBLogger;
-import se.curtrunebylund.projects.classes.Attempt;
+import se.curtrunebylund.projects.classes.Session;
 
 public class ProjectsLogger extends CRBLogger{
     public static void log(SQLiteDatabase db){
@@ -32,7 +30,7 @@ public class ProjectsLogger extends CRBLogger{
         }
     }
 
-    public static void log(Attempt item) {
+    public static void log(Session item) {
         log("log Attempt...");
         log("id", item.getId());
         log("heading", item.getHeading());

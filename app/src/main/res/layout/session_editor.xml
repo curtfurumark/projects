@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/purple_500"
-    tools:context=".activities.ItemEditorActivity">
+    tools:context=".activities.SessionEditorActivity">
 
     <EditText
         android:id="@+id/editText_itemEditor_heading"
@@ -63,12 +63,13 @@
         app:layout_constraintTop_toBottomOf="@+id/editText_itemEditor_comment" />
 
 
-    <TextView
-        android:id="@+id/textView_itemEditor_duration"
+    <EditText
+        android:id="@+id/editText_itemEditor_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:inputType="time"
         android:text="00:00:00"
         android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +90,7 @@
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_itemEditor_duration" />
+        app:layout_constraintTop_toBottomOf="@+id/editText_itemEditor_duration" />
 
     <EditText
         android:id="@+id/editText_itemEditor_updated"
