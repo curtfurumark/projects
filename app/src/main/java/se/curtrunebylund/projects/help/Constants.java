@@ -21,4 +21,6 @@ public class Constants {
     public static final String INTENT_BLANK_MUSIC_SESSION = "INTENT_BLANK_MUSIC_SESSION";
     public static final String INTENT_VIEW_SESSION_LOG = "INTENT_VIEW_SESSION_LOG";
     public static final String INTENT_SESSION_LOG_JSON = "INTENT_SESSION_LOG_JSON";
+    public static final String INTENT_LIST_SESSIONS = "INTENT_LIST_SESSIONS";
+    public static final String INTENT_PARENT_TASK_SERIALIZED = "INTENT_PARENT_TASK_SERIALIZED";
 }

@@ -7,7 +7,7 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/addSession_editText_heading"
+        android:id="@+id/addAssignment_editText_heading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="heading"
@@ -15,14 +15,27 @@
         android:minHeight="48dp" />
 
 
-    <Spinner
-        android:id="@+id/addSession_spinner_types"
+    <RadioGroup
+        android:id="@+id/addAssignment_radioGroup_type"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="48dp" />
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/addAssignement_radioButton_laps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="laps" />
+
+        <RadioButton
+            android:id="@+id/addAssignement_radioButton_reps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="repetitions" />
+    </RadioGroup>
 
     <Button
-        android:id="@+id/addSession_button_save"
+        android:id="@+id/addAssignment_button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="add" />

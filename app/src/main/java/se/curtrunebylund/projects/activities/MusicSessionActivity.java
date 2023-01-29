@@ -5,8 +5,10 @@ import static logger.CRBLogger.log;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.style.TtsSpan;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -34,22 +36,27 @@ import se.curtrunebylund.projects.classes.SessionLog;
 import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.db.PersistDBOne;
 import se.curtrunebylund.projects.db.PersistSQLite;
+import se.curtrunebylund.projects.fragments.AddAssignmentFragment;
+import se.curtrunebylund.projects.fragments.AddSessionFragment;
 import se.curtrunebylund.projects.help.Constants;
 import se.curtrunebylund.projects.projects.Grade;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.util.Kronos;
 import util.Converter;
 
-public class MusicSessionActivity extends AppCompatActivity implements Kronos.Callback {
+public class MusicSessionActivity extends AppCompatActivity implements Kronos.Callback, AddAssignmentFragment.Callback {
     private EditText editText_heading;
     private EditText  editText_comment;
     private EditText editText_assignment;
     private Button button_repetitions;
     private Button button_timer;
     private  Button button_lap;
+    private Button button_saveAssignment;
     private TextView textView_timer;
     private Integer n_repetitions = 0;
     private Assignment currentAssignment;
+    private List<Assignment> assignments = new ArrayList<>();
+
     private enum AssignmentMode{
         REPS, LAPS, DONE,  PENDING
     }
@@ -57,10 +64,11 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
     private final boolean VERBOSE = true;
     private boolean lap_running = false;
     private TextView textView_lap;
-    private Kronos timer;
+    private Kronos kronos;
     private Task task;
     private final Grade grade = Grade.PENDING;
     private Session session;
+
     private SessionLog sessionLog;
     private RecyclerView recyclerView_laps;
     private LapAdapter lapAdapter;
@@ -86,16 +94,24 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         button_lap = findViewById(R.id.button_musicSession_lap);
         button_lap.setEnabled(false);
         button_timer = findViewById(R.id.button_musicSession_timer);
+        button_saveAssignment = findViewById(R.id.musicSession_button_saveAssignment);
+        button_saveAssignment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveAssignment();
+            }
+        });
         editText_assignment = findViewById(R.id.editText_musicSession_assignment);
         button_lap.setOnClickListener(view -> onButtonLap());
         button_timer.setOnClickListener(view -> {
-            switch(timer.getState()){
+            switch(kronos.getState()){
                 case  STOPPED:
-                    timer.start();
+                    kronos.start();
                     button_timer.setText(R.string.ui_pause);
+                    button_lap.setEnabled(true);
                     break;
                 case RUNNING:
-                    timer.pause();
+                    kronos.pause();
                     button_timer.setText(R.string.ui_resume);
                     button_lap.setEnabled(false);
                     if( current_lap != null && current_lap.isRunning()){
@@ -103,20 +119,20 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
                     }
                     break;
                 case PAUSED:
-                    timer.resume();
+                    kronos.resume();
                     button_lap.setEnabled(true);
                     button_timer.setText(R.string.ui_pause);
             }
         });
         button_timer.setOnLongClickListener(view -> {
-            timer.stop();
+            kronos.stop();
             textView_timer.setText(R.string.hhmmss);
             button_timer.setText(R.string.ui_start);
             stopLap();
             return true;
         });
 
-        button_repetitions = findViewById(R.id.button_musicSession_repitition);
+        button_repetitions = findViewById(R.id.musicSession_button_repetitions);
         button_repetitions.setOnClickListener(view -> {
             n_repetitions++;
             String str = String.format(Locale.getDefault(), "%d", n_repetitions);
@@ -129,7 +145,7 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
             button_repetitions.setText(R.string.ui_just_do_it);
             return  true;
         });
-        timer = Kronos.getInstance(this);
+        kronos = Kronos.getInstance(this);
         Intent intent = getIntent();
         if( intent.getBooleanExtra(Constants.INTENT_MUSIC_SESSION, false)){
             task = (Task) intent.getSerializableExtra(Constants.INTENT_TASK);
@@ -150,35 +166,41 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         initRecycler();
     }
 
+    private void saveAssignment() {
+        log("MusicSessionActivity.saveAssignment()");
+        //session.addAssignment(currentAssignment);
+        assignments.add(currentAssignment);
+        currentAssignment = null;
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
-        timer.setActivityVisible(false);
-        timer.removeCallback();
+        kronos.removeCallback();
         if( VERBOSE) log("MusicSessionActivity.onPause()");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        timer.setActivityVisible(true);
-        timer.setCallback(this);
+        restoreUI();
+        kronos.setCallback(this);
         if( VERBOSE) log("MusicSessionActivity.onResume()");
     }
+
+
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        timer.setActivityVisible(true);
-        timer.setCallback(this);
+        kronos.setCallback(this);
         if( VERBOSE) log("MusicSessionActivity.onRestart()");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        timer.setActivityVisible(false);
-        timer.removeCallback();
+        kronos.removeCallback();
         if( VERBOSE) log("MusicSessionActivity.onStop()");
     }
 
@@ -191,6 +213,20 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         recyclerView_laps.setAdapter(lapAdapter);
     }
 
+    @Override
+    public void onAddAssignment(String heading, Assignment.Type type) {
+        log("MusicSessionActivity.onAddAssignement(String heading, Assignment.Type type)");
+        editText_assignment.setText(heading);
+        Toast.makeText(this, "type " + type.toString(), Toast.LENGTH_LONG).show();
+        currentAssignment = new Assignment(heading, type);
+/*        if( type.equals(Assignment.Type.LAPS)){
+            button_repetitions.setEnabled(false);
+            button_lap.setEnabled(true);
+        }else{
+            button_lap.setEnabled(false);
+            button_repetitions.setEnabled(true);
+        }*/
+    }
 
     private void onButtonLap() {
         if( VERBOSE)log("MusicSessionActivity.onButtonLap()");
@@ -228,7 +264,11 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
                 textView_timer.setText("hello");
                 break;
             case R.id.musicSession_home:
-                startActivity(new Intent(this, TaskListActivity.class));
+                Intent intent = new Intent(this, SessionListActivity.class);
+                intent.putExtra(Constants.INTENT_LIST_SESSIONS, true);
+                intent.putExtra(Constants.INTENT_PARENT_TASK_SERIALIZED, task);
+                startActivity(intent);
+
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -242,20 +282,38 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
     public void onTimerTick(int secs) {
         if(VERBOSE) log("MusicSessionActivity.onTimerClick() secs", secs);
         //textView_timer.
-        textView_timer.setText(Converter.formatSeconds(secs));
+        textView_timer.setText(Converter.formatSecondsWithHours(secs));
         if( current_lap != null && current_lap.isRunning()) {
-            textView_lap.setText(Converter.formatSeconds((int) current_lap.getElapsedTime()));
+            textView_lap.setText(Converter.formatSecondsWithHours((int) current_lap.getElapsedTime()));
         }
     }
 
     private void newAssignment() {
         if (VERBOSE) log("MusicSessionActivity.newAssignment()");
-        String description = editText_assignment.getText().toString();
-        if( description.isEmpty()){
-            Toast.makeText(this, "please enter a description of your assignment", Toast.LENGTH_LONG).show();
-            return;
+        new AddAssignmentFragment().show(getSupportFragmentManager(), "new assignement");
+    }
+
+    private void restoreUI() {
+        if(VERBOSE) log("MusicSessionActivity.restoreUI()");
+        Kronos.State state = kronos.getState();
+        switch (state){
+            case RUNNING:
+                button_timer.setText(R.string.ui_pause);
+                button_lap.setEnabled(true);
+                break;
+            case PAUSED:
+                button_timer.setText(R.string.ui_resume);
+                button_lap.setEnabled(false);
+                break;
+            case STOPPED:
+                button_timer.setText(R.string.ui_start);
+                button_lap.setEnabled(false);
+                break;
+
         }
-        currentAssignment = new Assignment(description);
+        if( state.equals(Kronos.State.RUNNING)){
+
+        }
     }
     private void saveSession() {
         if(VERBOSE) log("MusicSessionActivity.saveSession()");
@@ -269,7 +327,7 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         session.setComment(comment);
         session.setGrade(grade);
         session.setParent_id(task.getId());
-        session.setDuration(timer.getElapsedTime());
+        session.setDuration(kronos.getElapsedTime());
         session.setType(Type.MUSIC);
         session.setState(State.DONE);
         editText_heading.setHint("heading");
@@ -285,6 +343,10 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
     }
     private void stopLap(){
         if( VERBOSE) log("MusicSessionActivity.stopLap()");
+        if( current_lap == null){
+            log("...current_lap is null, returning, no worries");
+            return;
+        }
         current_lap.stop();
         lap_running = false;
         button_lap.setText(R.string.ui_start_lap);

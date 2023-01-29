@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/purple_500"
-    tools:context=".activities.SessionEditorActivity">
+    tools:context=".activities.ItemEditorActivity">
 
     <TextView
         android:id="@+id/textView_musicSession_task_heading"
@@ -115,21 +115,34 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/button_musicSession_repitition"
+        app:layout_constraintBottom_toTopOf="@+id/musicSession_button_repetitions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_musicSession_timer" />
 
     <Button
-        android:id="@+id/button_musicSession_repitition"
+        android:id="@+id/musicSession_button_repetitions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="hit me"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toTopOf="@id/musicSession_button_saveAssignment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView_musicSession"/>
+
+    <Button
+        android:id="@+id/musicSession_button_saveAssignment"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="hit me"
-        android:textSize="48sp"
+        android:text="save assignment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

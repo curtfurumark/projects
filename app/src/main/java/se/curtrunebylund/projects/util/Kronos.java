@@ -17,18 +17,12 @@ public class Kronos {
     private Timer timer;
     private TimerTask timerTask;
     private static final boolean VERBOSE = true;
-    private boolean ACTIVITY_VISIBLE = true;
+    //private boolean ACTIVITY_VISIBLE = true;
 
     private int seconds;
 
-    public void setCallback(Kronos.Callback callback) {
-        if( VERBOSE) log("Kronos.setCallback(Callback)");
-        this.callback = callback;
-    }
-    public void removeCallback(){
-        if( VERBOSE) log("Kronos.removeCallback()");
-        this.callback = null;
-    }
+
+
 
     public enum State{
         STOPPED, RUNNING, PAUSED
@@ -75,6 +69,11 @@ public class Kronos {
         start();
     }
 
+    public void removeCallback(){
+        if( VERBOSE) log("Kronos.removeCallback()");
+        this.callback = null;
+    }
+
     public void reset(){
         if( VERBOSE) log("Kronos.reset()");
         timer.cancel();
@@ -82,14 +81,9 @@ public class Kronos {
         seconds = 0 ;
     }
 
-    /**
-     * dont callback to calling activity, whenever said activity paused or whatever
-     * let's see what happens
-     * @param visible
-     */
-    public void setActivityVisible(boolean visible){
-        if( VERBOSE) log("Kronos.setActivityVisible(boolean)", visible);
-        ACTIVITY_VISIBLE = visible;
+    public void setCallback(Kronos.Callback callback) {
+        if( VERBOSE) log("Kronos.setCallback(Callback)");
+        this.callback = callback;
     }
     public void start(){
         if( VERBOSE) log("Kronos.start()");
@@ -99,16 +93,13 @@ public class Kronos {
             @Override
             public void run() {
                 seconds++;
-                if ( callback != null && ACTIVITY_VISIBLE){
+                if ( callback != null){
                     new Handler(Looper.getMainLooper()).post(new Runnable() {
                         @Override
                         public void run() {
                             callback.onTimerTick(seconds);
-                            //textView.setText(Converter.formatSeconds(seconds));
                         }
                     });
-                }else{
-                    if( VERBOSE) log("time keep on ticking but not calling back");
                 }
             }
         };

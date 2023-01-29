@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -32,9 +33,9 @@ public class AddSessionFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_session_fragment, container, false);
-        Button button_save = view.findViewById(R.id.button_attemptButtonSheet_addAttempt);
-        editText_heading = view.findViewById(R.id.editText_attemptBottomSheet_heading);
-        spinner_types = view.findViewById(R.id.spinner_attemptBottomSheet);
+        Button button_save = view.findViewById(R.id.addSession_button_save);
+        editText_heading = view.findViewById(R.id.addSession_editText_heading);
+        spinner_types = view.findViewById(R.id.addSession_spinner_types);
         String[] types = Type.toArray();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.support_simple_spinner_dropdown_item, types);
         spinner_types.setAdapter(adapter);

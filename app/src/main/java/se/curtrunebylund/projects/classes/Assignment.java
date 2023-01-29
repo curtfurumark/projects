@@ -7,10 +7,15 @@ public class Assignment {
     private String heading;
     private int reps;
     private long total_time;
+    public enum Type{
+        PENDING, LAPS, REPS
+    }
+    private Type type = Type.PENDING;
     private  List<Lap> laps = new ArrayList<>();
 
-    public Assignment(String heading) {
+    public Assignment(String heading, Type type) {
         this.heading = heading;
+        this.type = type;
     }
 
     public String getHeading() {
@@ -39,5 +44,21 @@ public class Assignment {
 
     public void addLap(Lap lap) {
         laps.add(lap);
+    }
+
+    public long getTotal_time() {
+        return total_time;
+    }
+
+    public void setTotal_time(long total_time) {
+        this.total_time = total_time;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 }

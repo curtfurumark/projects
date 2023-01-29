@@ -1,5 +1,6 @@
 package se.curtrunebylund.projects.activities;
 
+import static logger.CRBLogger.logError;
 import static se.curtrunebylund.projects.util.ProjectsLogger.log;
 
 import android.content.Intent;
@@ -73,6 +74,16 @@ public class SessionListActivity extends AppCompatActivity implements
             sessions = PersistSQLite.getAttempts(task.getId(),this);
             sortAttempts();
             sessionAdapter.setFilteredList(sessions);
+        }
+        if(intent.getBooleanExtra(Constants.INTENT_LIST_SESSIONS, false)){
+            task = (Task) intent.getSerializableExtra(Constants.INTENT_PARENT_TASK_SERIALIZED);
+            if(task == null){
+                logError("SessionListActivity, INTENT_PARENT_TASK_SERIALIZED return null");
+            }else{
+                sessions = PersistSQLite.getAttempts(task.getId(), this);
+                sortAttempts(); //TODO shouldn't have to sort them first thing, edit sql query
+                sessionAdapter.setFilteredList(sessions);
+            }
         }
         textView_task_heading.setOnClickListener(this);
     }
@@ -160,7 +171,7 @@ public class SessionListActivity extends AppCompatActivity implements
     @Override
     public void onEditClick(Session session) {
         CRBLogger.log("AttemptListActivity.onEditClick(Attempt)");
-        Intent intent = new Intent(this, SessionEditorActivity.class);
+        Intent intent = new Intent(this, ItemEditorActivity.class);
         intent.putExtra(Constants.INTENT_EDIT_ITEM, true);
         intent.putExtra(Constants.INTENT_SERIALIZED_ATTEMPT, session);
         intent.putExtra(Constants.INTENT_PROJECT, project);

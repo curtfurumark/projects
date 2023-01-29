@@ -63,7 +63,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Projects.NoActionBar" />
         <activity
-            android:name=".activities.SessionEditorActivity"
+            android:name=".activities.ItemEditorActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.MusicSessionActivity"

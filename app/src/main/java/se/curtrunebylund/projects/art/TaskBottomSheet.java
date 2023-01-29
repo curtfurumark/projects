@@ -26,7 +26,7 @@ public class TaskBottomSheet extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.task_bottom_sheet, container, false);
-        button_save = view.findViewById(R.id.button_attemptButtonSheet_addAttempt);
+        button_save = view.findViewById(R.id.addAssignment_button_add);
         editText = view.findViewById(R.id.editText_myBottomSheet);
         button_save.setOnClickListener(new View.OnClickListener() {
             @Override

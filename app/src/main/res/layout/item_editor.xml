@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/purple_500"
-    tools:context=".activities.SessionEditorActivity">
+    tools:context=".activities.ItemEditorActivity">
 
     <EditText
         android:id="@+id/editText_itemEditor_heading"

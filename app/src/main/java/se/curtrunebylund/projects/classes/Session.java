@@ -233,4 +233,7 @@ public class Session implements Serializable {
     public void set(SessionLog sessionLog) {
         json = new Gson().toJson(sessionLog);
     }
+
+    public void addAssignment(Assignment currentAssignment) {
+    }
 }
