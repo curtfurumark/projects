@@ -99,7 +99,7 @@ public class ProjectListActivity extends AppCompatActivity implements
         Debug.log("ProjectListActivity.onOptionsItemSelected()");
         switch (item.getItemId()) {
             case R.id.icon_home:
-                startActivity(new Intent(this, SplashActivity.class));
+                startActivity(new Intent(this, HomeActivity.class));
                 return true;
             case R.id.load_from_mysql:
                 //getMusicProjects();

@@ -23,7 +23,6 @@ import se.curtrunebylund.projects.infinity.ListItem;
 import se.curtrunebylund.projects.infinity.ListItemAdapter;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.activities.SplashActivity;
 import se.curtrunebylund.projects.db.PersistInfinity;
 import se.curtrunebylund.projects.help.Constants;
 import se.curtrunebylund.projects.util.Stack;
@@ -90,7 +89,7 @@ public class InfinityActivity extends AppCompatActivity implements ListItemAdapt
         switch(item.getItemId()){
             case R.id.icon_home:
                 if( parentItem == null){
-                    startActivity(new Intent(this, SplashActivity.class));
+                    startActivity(new Intent(this, HomeActivity.class));
                 }
                 parentItem = stack.pop();
                 Debug.log(stack);

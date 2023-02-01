@@ -24,6 +24,7 @@ import java.util.Locale;
 
 import item.State;
 import item.Type;
+import static logger.CRBLogger.*;
 import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.classes.Project;
 import se.curtrunebylund.projects.classes.Session;
@@ -58,21 +59,7 @@ public class ItemEditorActivity extends AppCompatActivity implements Kronos.Call
 
     private Session item;
 
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-        log("ItemEditor.afterTextChanged(Editable)", editable.toString());
-        //TODO
-    }
 
     private enum Mode{
         CREATE, EDIT, DELETE
@@ -119,48 +106,24 @@ public class ItemEditorActivity extends AppCompatActivity implements Kronos.Call
 
         Intent intent = getIntent();
         if( intent.getBooleanExtra(Constants.INTENT_EDIT_ITEM, false)){
+            setTitle("edit");
             log("ItemEditorActivity INTENT_EDIT_ITEM");
             item = (Session) intent.getSerializableExtra(Constants.INTENT_SERIALIZED_ATTEMPT);
-            ProjectsLogger.log(item);
+            log(item);
             task = (Task) intent.getSerializableExtra(Constants.INTENT_TASK);
             project = (Project) intent.getSerializableExtra(Constants.INTENT_PROJECT);
             setUI(item);
         }
     }
-
-    private void setKronos() {
-        if( VERBOSE) log("ItemEditorActivity.setKronos()");
-        Kronos.State state = kronos.getState();
-        switch (state){
-            case STOPPED:
-                kronos.start();
-                button_timer.setText(R.string.ui_pause);
-                break;
-            case RUNNING:
-                kronos.pause();
-                button_timer.setText(R.string.ui_resume);
-                break;
-        }
-        kronos.setCallback(this);
+    @Override
+    public void afterTextChanged(Editable editable) {
+        if( VERBOSE) log("ItemEditor.afterTextChanged(Editable)", editable.toString());
+        //TODO, do something, just anything
     }
 
-    private void initSpinnerType() {
-        if( VERBOSE) log("ItemEditorActivity.initSpinnerType()", Type.PENDING.toString());
-        String[] types  = Type.toArray();
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, types);
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
-        spinner_type.setAdapter(arrayAdapter);
-        spinner_type.setSelection(Type.PENDING.ordinal());
-        spinner_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ItemEditorActivity.this.type = Type.values()[position];
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-        });
     }
     private void initSpinnerState() {
         if( VERBOSE) log("ItemEditorActivity.initSpinnerState()", State.PENDING.toString());
@@ -173,6 +136,24 @@ public class ItemEditorActivity extends AppCompatActivity implements Kronos.Call
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ItemEditorActivity.this.state = State.values()[position];
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+    private void initSpinnerType() {
+        if( VERBOSE) log("ItemEditorActivity.initSpinnerType()", Type.PENDING.toString());
+        String[] types  = Type.toArray();
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, types);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spinner_type.setAdapter(arrayAdapter);
+        spinner_type.setSelection(Type.PENDING.ordinal());
+        spinner_type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ItemEditorActivity.this.type = Type.values()[position];
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -226,7 +207,15 @@ public class ItemEditorActivity extends AppCompatActivity implements Kronos.Call
         super.onResume();
         resetKronos();
     }
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+    }
+
+    public void onTimerTick(int secs) {
+        if( VERBOSE) log("ItemEditor.onTimerTick, secs", secs);
+        textView_duration.setText(Converter.formatSecondsWithHours(secs));
+    }
     private void resetKronos() {
         if( VERBOSE) log("ItemEditorActivity.resetKronos()");
         kronos.setCallback(this);
@@ -246,10 +235,7 @@ public class ItemEditorActivity extends AppCompatActivity implements Kronos.Call
 
     }
 
-    public void onTimerTick(int secs) {
-        if( VERBOSE) log("ItemEditor.onTimerTick, secs", secs);
-        textView_duration.setText(Converter.formatSecondsWithHours(secs));
-    }
+
     private void saveItem() {
         if(VERBOSE) log("ItemEditorActivity.saveItem()");
         item.setComment(editText_comment.getText().toString());
@@ -267,6 +253,21 @@ public class ItemEditorActivity extends AppCompatActivity implements Kronos.Call
         intent.putExtra(Constants.INTENT_TASK, task);
         intent.putExtra(Constants.INTENT_PROJECT, project);
         startActivity(intent);
+    }
+    private void setKronos() {
+        if( VERBOSE) log("ItemEditorActivity.setKronos()");
+        Kronos.State state = kronos.getState();
+        switch (state){
+            case STOPPED:
+                kronos.start();
+                button_timer.setText(R.string.ui_pause);
+                break;
+            case RUNNING:
+                kronos.pause();
+                button_timer.setText(R.string.ui_resume);
+                break;
+        }
+        kronos.setCallback(this);
     }
     private void setUI(Session item) {
         if( VERBOSE) log("ItemEditorActivity.setUI(Item)");

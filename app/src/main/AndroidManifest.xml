@@ -25,7 +25,7 @@
             android:name=".dev.DevTestActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SplashActivity"
+            android:name=".activities.HomeActivity"
             android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>

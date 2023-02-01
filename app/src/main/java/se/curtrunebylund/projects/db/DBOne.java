@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import se.curtrunebylund.projects.classes.Session;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.gson.GsonEasy;
 import se.curtrunebylund.projects.classes.Project;
@@ -218,6 +219,10 @@ public class DBOne {
         Task[]  task_array = gson.fromJson(result, Task[].class);
         Debug.log("getTask, task_list size" + task_array.length);
         return new ArrayList<Task>(Arrays.asList(task_array));
+    }
+
+    public static void persistSessions(List<Session> sessions){
+        //TODO implement in intellij onedotcom
     }
 
     public static String touch(Project project, Task task)  {

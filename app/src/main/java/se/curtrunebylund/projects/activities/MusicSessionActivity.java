@@ -219,6 +219,7 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         editText_assignment.setText(heading);
         Toast.makeText(this, "type " + type.toString(), Toast.LENGTH_LONG).show();
         currentAssignment = new Assignment(heading, type);
+        PersistDBOne.persist(currentAssignment);
 /*        if( type.equals(Assignment.Type.LAPS)){
             button_repetitions.setEnabled(false);
             button_lap.setEnabled(true);
@@ -288,6 +289,10 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         }
     }
 
+    /**
+     * bottomfragment, callback onAddAssignment(...)
+     * menu icon add
+     */
     private void newAssignment() {
         if (VERBOSE) log("MusicSessionActivity.newAssignment()");
         new AddAssignmentFragment().show(getSupportFragmentManager(), "new assignement");

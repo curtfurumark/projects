@@ -2,6 +2,7 @@ package se.curtrunebylund.projects.activities;
 
 import static logger.CRBLogger.log;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -20,22 +21,21 @@ import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.art.ArtWorkListActivity;
 import se.curtrunebylund.projects.db.DBSQLite;
 import se.curtrunebylund.projects.help.Constants;
-import se.curtrunebylund.projects.util.Debug;
-import se.curtrunebylund.projects.util.ProjectsLogger;
 
-public class SplashActivity extends AppCompatActivity {
 
+public class HomeActivity extends AppCompatActivity {
+    public static boolean VERBOSE = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_activity);
+        setContentView(R.layout.home_activity);
 
         try {
             CRBLogger.startLogging(getFilesDir().toString() + "projects.log");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Debug.log("SplashActivity.onCreate() infinity branch");
+        log("HomeActivity.onCreate() infinity branch");
         TextView textView_art = findViewById(R.id.textView_splash_art);
         TextView textView_projects = findViewById(R.id.textView_splash_projects);
         TextView textView_infinity = findViewById(R.id.textView_splash_infinity);
@@ -46,8 +46,13 @@ public class SplashActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * used to fire methods that are for converting stuff
+     * one of changes to the existing project
+     */
     private void forOnceInMyLife() {
-        log("SplashActivity.forOnceInMyLife()");
+        if( VERBOSE)log("HomeActivity.forOnceInMyLife()");
     }
 
     @Override
@@ -57,6 +62,7 @@ public class SplashActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
@@ -74,8 +80,12 @@ public class SplashActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * think this one is a "shortcut" meant to make my life as an developer easier
+     * maybe it will turn out to have some kind of real use, wait and see
+     */
     private void startMusicSessionActivity() {
-        log("startMusicSessionActivity");
+        if( VERBOSE) log("HomeActivity.startMusicSessionActivity");
         Intent intent = new Intent(this, MusicSessionActivity.class);
         intent.putExtra(Constants.INTENT_BLANK_MUSIC_SESSION, true);
         startActivity(intent);
@@ -86,6 +96,7 @@ public class SplashActivity extends AppCompatActivity {
      *  whatever, it's called from dropdown menu anyways
      */
     private void openDb() {
+        if( VERBOSE)log("HomeActivity.openDb()");
         DBSQLite db = new DBSQLite(this);
         SQLiteDatabase database = db.getReadableDatabase();
     }

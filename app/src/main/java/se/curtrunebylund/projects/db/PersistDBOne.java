@@ -5,6 +5,7 @@ import static se.curtrunebylund.projects.util.ProjectsLogger.log;
 import android.app.Activity;
 
 import persist.Queeries;
+import se.curtrunebylund.projects.classes.Assignment;
 import se.curtrunebylund.projects.classes.Project;
 import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.threads.SelectThread;
@@ -68,5 +69,16 @@ public class PersistDBOne {
         log("PersistDBOne.touch(Project, Task)");
         TouchProjectTaskThread thread = new TouchProjectTaskThread(project, task);
         thread.start();
+    }
+
+    /**
+     * persists to db1 table assignment
+     * no callback, just persists
+     * @param currentAssignment
+     */
+
+    public static void persist(Assignment currentAssignment) {
+        log("PersistDBOne.persist(Assignemnt)");
+        //TODO
     }
 }

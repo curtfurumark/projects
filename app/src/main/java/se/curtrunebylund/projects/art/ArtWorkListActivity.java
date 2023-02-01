@@ -29,7 +29,7 @@ import java.util.List;
 
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.activities.SplashActivity;
+import se.curtrunebylund.projects.activities.HomeActivity;
 import se.curtrunebylund.projects.projects.DevStuff;
 
 
@@ -140,7 +140,7 @@ public class ArtWorkListActivity extends AppCompatActivity {
         Debug.log("PictureThisActivity.onOptionsItemSelected");
         switch(item.getItemId()){
             case R.id.icon_home:
-                startActivity(new Intent(this, SplashActivity.class));
+                startActivity(new Intent(this, HomeActivity.class));
                 return true;
             case R.id.new_artwork:
                 Intent intent = new Intent(this, ArtworkEditActivity.class);
