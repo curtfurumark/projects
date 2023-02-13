@@ -12,11 +12,9 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
-import logger.CRBLogger;
 import se.curtrunebylund.projects.classes.Session;
 import se.curtrunebylund.projects.db.Result;
 import se.curtrunebylund.projects.infinity.ListItem;
-import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.art.ArtWork;
 
 public class Debug {
@@ -24,7 +22,6 @@ public class Debug {
     public static String CB_TAG = "CURTRUNEBYLUND";
     public static void log(String mess){
         Log.v(CB_TAG, mess);
-        CRBLogger.logToFile(mess);
     }
     private static List<String> logList = new ArrayList<>();
 
@@ -58,22 +55,6 @@ public class Debug {
         log(result.getPHPResult());
     }
 
-    public static void log(Task task) {
-        Debug.log("Debug.log(Task)");
-        log(task.debug());
-    }
-
-    public static void logTaskList(List<Task> tasks) {
-        Debug.log("Debug.logTaskList<Task>");
-        if( tasks == null){
-            Debug.log("...tasks == null");
-            return;
-        }
-        Debug.log("...size: " + tasks.size());
-        for( Task task: tasks){
-            log(task);
-        }
-    }
     public static void log(Stack stack) {
         log("Debug.log(Stack)");
         if( null == stack){

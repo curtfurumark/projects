@@ -22,18 +22,16 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
+import classes.Project;
+import classes.Task;
 import item.State;
 import item.Type;
-import static logger.CRBLogger.*;
 import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.classes.Project;
 import se.curtrunebylund.projects.classes.Session;
-import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.db.PersistDBOne;
 import se.curtrunebylund.projects.db.PersistSQLite;
 import se.curtrunebylund.projects.help.Constants;
 import se.curtrunebylund.projects.util.Kronos;
-import se.curtrunebylund.projects.util.ProjectsLogger;
 import util.Converter;
 
 public class ItemEditorActivity extends AppCompatActivity implements Kronos.Callback, TextWatcher {

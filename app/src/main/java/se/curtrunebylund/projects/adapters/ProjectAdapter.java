@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import classes.Project;
 import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.classes.Project;
 import util.Converter;
 
 
@@ -22,9 +22,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
     private List<Project> projectList;
     private Context context;
     public interface Callback{
-        public void onItemClick(Project project);
+        void onItemClick(Project project);
     }
-    private Callback callback;
+    private final Callback callback;
     public ProjectAdapter(java.util.List<Project> musicProjects,Callback callback,  Context context) {
         System.out.println("MusicProjectAdapter ctor");
         if (musicProjects == null){
@@ -58,11 +58,10 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
         return projectList.size();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        private android.widget.TextView textView_description;
+        private final android.widget.TextView textView_description;
         //private CheckBox checkBox_done;
-        private android.widget.TextView textView_id;
-        private TextView textView_updated;
-        private ConstraintLayout parentLayout;
+        private final android.widget.TextView textView_id;
+        private final TextView textView_updated;
 
         public MyViewHolder(@androidx.annotation.NonNull android.view.View itemView) {
             super(itemView);
@@ -70,13 +69,10 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.MyViewHo
             textView_description = itemView.findViewById(R.id.textView_sessionAdapter_heading);
             textView_id = itemView.findViewById(R.id.textView_music_project_id);
             textView_updated = itemView.findViewById(R.id.textView_updated);
-            parentLayout = itemView.findViewById(R.id.constrainLayout_music_project_adapter);
-            parentLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (callback != null){
-                        callback.onItemClick(projectList.get(getAdapterPosition()));
-                    }
+            ConstraintLayout parentLayout = itemView.findViewById(R.id.constrainLayout_music_project_adapter);
+            parentLayout.setOnClickListener(view -> {
+                if (callback != null){
+                    callback.onItemClick(projectList.get(getAdapterPosition()));
                 }
             });
         }

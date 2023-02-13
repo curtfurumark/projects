@@ -1,5 +1,7 @@
 package se.curtrunebylund.projects.db;
 
+import static logger.CRBLogger.log;
+
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
@@ -24,11 +26,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import classes.Project;
+import classes.Task;
+import gson.GsonEasy;
+import persist.Urls;
 import se.curtrunebylund.projects.classes.Session;
 import se.curtrunebylund.projects.util.Debug;
-import se.curtrunebylund.projects.gson.GsonEasy;
-import se.curtrunebylund.projects.classes.Project;
-import se.curtrunebylund.projects.classes.Task;
 import util.Converter;
 
 
@@ -51,7 +54,7 @@ public class DBOne {
     private static final String GET_TASK_CHILDREN_URL = "https://curtfurumark.se/projects/get_task_children.php";
     private static final String GET_ALL_TASK_CHILDREN_URL = "https://curtfurumark.se/projects/get_all_task_children.php";
     private static final String GET_TASK_URL = "https://curtfurumark.se/projects/get_task.php";
-    private static final String UPDATED_PROJECT_TASK_UPDATED_URL ="https://curtfurumark.se/projects/update_date_time_project_task.php" ;
+    //private static final String UPDATED_PROJECT_TASK_UPDATED_URL ="https://curtfurumark.se/projects/update_date_time_project_task.php" ;
 
 
     public static Task getTask(long id) throws Exception {
@@ -225,9 +228,15 @@ public class DBOne {
         //TODO implement in intellij onedotcom
     }
 
+    /**
+     *
+     * @param project
+     * @param task
+     * @return
+     */
     public static String touch(Project project, Task task)  {
-        Debug.log("DBOne.touch(Project project, Task task)");
-        HTTPPost httpPost = new HTTPPost(UPDATED_PROJECT_TASK_UPDATED_URL);
+        log("DBOne.touch(Project project, Task task)");
+        HTTPPost httpPost = new HTTPPost(Urls.PROJECTS_TOUCH_PROJ_AND_TASK);
         httpPost.add("project_id", project.getId());
         httpPost.add("task_id", task.getId());
         httpPost.add("updated", LocalDateTime.now());
@@ -315,14 +324,5 @@ public class DBOne {
         httpPost.add("project_id", String.valueOf(project_id));
         httpPost.add("last_update", localDateTime.format(DateTimeFormatter.ofPattern(Converter.DATE_TIME_FORMAT_PATTERN)));
         return post(httpPost);
-    }
-
-    public static void updateUpdated(Project project, Task task) {
-        Debug.log("DBOne.updateUpdated(Project project, Task task)");
-        HTTPPost httpPost = new HTTPPost(UPDATED_PROJECT_TASK_UPDATED_URL);
-        httpPost.add("project_id", project.getId());
-        httpPost.add("task_id", task.getId());
-        httpPost.add("updated", project.getUpdated());
-        post(httpPost);
     }
 }

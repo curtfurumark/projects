@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import classes.projects.Assignment;
 import item.State;
 import item.Type;
 import se.curtrunebylund.projects.projects.Grade;
@@ -117,12 +118,7 @@ public class Session implements Serializable {
     public long getParent_id() {
         return parent_id;
     }
-    public SessionLog getSessionLog(){
-        if( json != null && !json.isEmpty()){
-            return new Gson().fromJson(json, SessionLog.class);
-        }
-        return new SessionLog(-1);
-    }
+
     public String getTags(){
         return "not implemented";
     }
@@ -230,9 +226,6 @@ public class Session implements Serializable {
     }
 
 
-    public void set(SessionLog sessionLog) {
-        json = new Gson().toJson(sessionLog);
-    }
 
     public void addAssignment(Assignment currentAssignment) {
     }

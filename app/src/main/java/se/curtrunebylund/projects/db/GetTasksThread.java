@@ -8,8 +8,8 @@ import androidx.annotation.RequiresApi;
 
 import java.util.List;
 
+import classes.Task;
 import se.curtrunebylund.projects.util.Debug;
-import se.curtrunebylund.projects.classes.Task;
 
 public class GetTasksThread extends Thread{
         private final String parent_id;
@@ -21,7 +21,7 @@ public class GetTasksThread extends Thread{
         private final Callback callback;
 
 
-        public GetTasksThread(Integer id, Callback callback, Activity activity) {
+        public GetTasksThread(Long id, Callback callback, Activity activity) {
             this.parent_id = id.toString();
             this.callback = callback;
             this.activity = activity;

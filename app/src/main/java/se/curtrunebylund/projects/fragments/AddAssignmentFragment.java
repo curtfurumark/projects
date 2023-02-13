@@ -17,9 +17,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import item.Type;
 import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.classes.Assignment;
 
 public class AddAssignmentFragment extends BottomSheetDialogFragment {
     private EditText editText_heading;
@@ -27,7 +25,7 @@ public class AddAssignmentFragment extends BottomSheetDialogFragment {
     private RadioButton  radioButton_checked;
 
     public interface Callback{
-        void onAddAssignment(String text, Assignment.Type type);
+        void onAddAssignment(String text);
     }
     private Callback listener;
     @Nullable
@@ -47,8 +45,8 @@ public class AddAssignmentFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View view) {
                 //if( radioButton_checked.getId() == R.id.addAssignement_radioButton_laps
-                Assignment.Type type = radioButton_checked.getId() == R.id.addAssignement_radioButton_laps ?  Assignment.Type.LAPS: Assignment.Type.REPS;
-                listener.onAddAssignment(editText_heading.getText().toString(), type);
+                //Assignment.Type type = radioButton_checked.getId() == R.id.addAssignement_radioButton_laps ?  Assignment.Type.LAPS: Assignment.Type.REPS;
+                listener.onAddAssignment(editText_heading.getText().toString());
                 dismiss();
             }
         });

@@ -17,8 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Locale;
 
+import classes.Project;
 import item.State;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
@@ -27,7 +29,6 @@ import se.curtrunebylund.projects.db.PersistDBOne;
 import se.curtrunebylund.projects.db.Result;
 import se.curtrunebylund.projects.db.UpdateProjectThread;
 import se.curtrunebylund.projects.help.Constants;
-import se.curtrunebylund.projects.classes.Project;
 
 
 public class ProjectEditorActivity extends AppCompatActivity implements
@@ -78,7 +79,7 @@ public class ProjectEditorActivity extends AppCompatActivity implements
             editText_comment.setText(project.getComment());
             String updated = String.format(Locale.getDefault(),"updated: %s", project.getUpdated());
             textView_updated.setText(updated);
-            String created = String.format(Locale.getDefault(),"created: %s", project.getAdded());
+            String created = String.format(Locale.getDefault(),"created: %s", project.getCreated());
             textView_created.setText(created);
             String id = String.format(Locale.getDefault(),"id: %d", project.getId());
             textView_id.setText(id);
@@ -86,15 +87,9 @@ public class ProjectEditorActivity extends AppCompatActivity implements
             Debug.log("CREATE_PROJECT");
             setTitle("create project");
             mode = Mode.CREATE;
-            createProject();
+            project = new Project();
         }
     }
-
-    private void createProject() {
-        Debug.log("ProjectAddActivity.createProject()");
-        project = new Project();
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void afterAddProjectThread(Result result){
 
@@ -105,12 +100,12 @@ public class ProjectEditorActivity extends AppCompatActivity implements
         project.setHeading(editText_heading.getText().toString());
         project.setComment(editText_comment.getText().toString());
         project.setDescription(editText_description.getText().toString());
-        project.setUpdated(LocalDateTime.now());
+        project.setUpdated(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
         project.setTags(editText_tags.getText().toString());
 
         if( mode.equals(Mode.CREATE)) {
             project.setState(State.TODO);
-            project.setCreated(LocalDateTime.now());
+            project.setCreated(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
             PersistDBOne.add(project, this, this);
         }else{
             PersistDBOne.update(project, this, this);

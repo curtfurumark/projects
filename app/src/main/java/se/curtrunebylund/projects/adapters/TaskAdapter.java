@@ -1,5 +1,7 @@
 package se.curtrunebylund.projects.adapters;
 
+import static logger.CRBLogger.log;
+
 import android.content.Context;
 import android.os.Build;
 import android.view.LayoutInflater;
@@ -14,10 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import classes.Task;
 import item.State;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.classes.Task;
 import util.Converter;
 
 
@@ -72,7 +74,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.MyViewHolder>{
             }
         }
         holder.checkBox_state.setChecked(checked);
-        Debug.log(task);
+        log(task);
     }
 
 

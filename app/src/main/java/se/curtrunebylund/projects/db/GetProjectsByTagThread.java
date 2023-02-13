@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import java.util.List;
 
-import se.curtrunebylund.projects.classes.Project;
+import classes.Project;
 
 public class GetProjectsByTagThread extends Thread{
     private String tag;

@@ -5,8 +5,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import classes.Project;
 import se.curtrunebylund.projects.util.Debug;
-import se.curtrunebylund.projects.classes.Project;
 
 public class AddProjectThread extends Thread{
     private final Project project;

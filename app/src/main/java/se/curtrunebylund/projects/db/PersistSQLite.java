@@ -5,9 +5,10 @@ import android.content.Context;
 import java.util.List;
 
 import static logger.CRBLogger.*;
+
+import classes.Task;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.classes.Session;
-import se.curtrunebylund.projects.classes.Task;
 
 public class PersistSQLite {
     public static void delete(Session session, Context context) {

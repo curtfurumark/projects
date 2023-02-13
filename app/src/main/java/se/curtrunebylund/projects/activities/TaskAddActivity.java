@@ -1,5 +1,7 @@
 package se.curtrunebylund.projects.activities;
 
+import static logger.CRBLogger.log;
+
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Build;
@@ -19,7 +21,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
+import classes.Project;
+import classes.Task;
 import item.State;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.R;
@@ -28,11 +33,8 @@ import se.curtrunebylund.projects.db.PersistDBOne;
 import se.curtrunebylund.projects.db.Result;
 import se.curtrunebylund.projects.db.UpdateTaskThread;
 import se.curtrunebylund.projects.help.Constants;
-import se.curtrunebylund.projects.classes.Project;
-import se.curtrunebylund.projects.classes.Task;
 
 
-@RequiresApi(api = Build.VERSION_CODES.O)
 public class TaskAddActivity extends AppCompatActivity implements
         AddTaskThread.Callback,
         UpdateTaskThread.Callback{
@@ -70,7 +72,7 @@ public class TaskAddActivity extends AppCompatActivity implements
         textView_target_date = findViewById(R.id.textView_taskAdd_target_date);
 
         spinner_state = findViewById(R.id.spinner_taskAdd_state);
-        initStateSpinner(State.TODO);
+        initStateSpinner();
         textView_target_date.setText(target_date.toString());
         textView_target_date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,13 +113,13 @@ public class TaskAddActivity extends AppCompatActivity implements
             switch_is_done.setChecked(task.getState().equals(State.DONE));
         }
     }
-    private void initStateSpinner(State initial_state) {
+    private void initStateSpinner() {
         Debug.log("TaskAddActivity.initStateSpinner()");
         String[] states = State.toArray();
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, states);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
         spinner_state.setAdapter(arrayAdapter);
-        spinner_state.setSelection(initial_state.ordinal());
+        spinner_state.setSelection(State.TODO.ordinal());
         spinner_state.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -207,8 +209,8 @@ public class TaskAddActivity extends AppCompatActivity implements
         Debug.log("TaskAddActivity.onTaskAdded() res: " + result.toString());
         if ( result.isOK()) {
             task.setId(result.getID());
-            Debug.log(task);
-            project.setUpdated(LocalDateTime.now());
+            log(task);
+            project.setUpdated(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
             //PersistDBOne.update(project, null, null);
             Intent intent = new Intent(this, TaskListActivity.class);
             intent.putExtra(Constants.INTENT_SHOW_TASKS, true);

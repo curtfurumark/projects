@@ -3,6 +3,7 @@ package se.curtrunebylund.projects.activities;
 import static logger.CRBLogger.log;
 import static logger.CRBLogger.logError;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,11 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import classes.Project;
+import classes.Task;
 import item.State;
 import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.adapters.TaskAdapter;
-import se.curtrunebylund.projects.classes.Project;
-import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.db.GetTasksThread;
 import se.curtrunebylund.projects.db.PersistDBOne;
 import se.curtrunebylund.projects.db.Result;
@@ -93,6 +94,7 @@ public class TaskListActivity extends AppCompatActivity implements
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@androidx.annotation.NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -101,18 +103,12 @@ public class TaskListActivity extends AppCompatActivity implements
                 startActivity(intent1);
                 return true;
             case R.id.icon_add_task:
+                //TODO, a bottom fragment please
                 Intent intent_add = new Intent(this, TaskAddActivity.class);
                 intent_add.putExtra(Constants.INTENT_PROJECT, project);
                 intent_add.putExtra(Constants.INTENT_ADD_TASK, true);
                 startActivity(intent_add);
                 return true;
-            case R.id.get_comments:
-                //this.coupleProjectsAndTasks();
-                return true;
-            case R.id.clear_tasks:
-                //clearTasks();
-                return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -120,7 +116,7 @@ public class TaskListActivity extends AppCompatActivity implements
     @Override
     public void onItemClick(Task task) {
         log("TaskListActivity.onItemClick(Task() ");
-        Debug.log(task);
+        log(task);
         Intent intent = new Intent(this, SessionListActivity.class);
         intent.putExtra(Constants.INTENT_SHOW_SESSIONS, true);
         intent.putExtra(Constants.INTENT_TASK, task);

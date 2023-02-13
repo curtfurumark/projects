@@ -5,11 +5,12 @@ import android.content.Context;
 import java.util.List;
 
 import static logger.CRBLogger.*;
+
+import classes.Task;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.art.ArtWork;
 import se.curtrunebylund.projects.art.ArtWorkManager;
 import se.curtrunebylund.projects.infinity.ListItem;
-import se.curtrunebylund.projects.classes.Task;
 
 public class DBAdmin {
     public static final String CREATE_TABLE_ATTEMPTS = "CREATE TABLE attempts(id INTEGER PRIMARY KEY AUTOINCREMENT,parent_id INTEGER, heading TEXT, description TEXT, comment TEXT, created INTEGER, updated INTEGER, grade INTEGER, state INTEGER, duration INTEGER, json TEXT, type INTEGER)";

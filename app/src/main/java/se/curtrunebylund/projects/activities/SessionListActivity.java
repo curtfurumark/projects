@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import classes.Project;
+import classes.Task;
 import item.Type;
 import logger.CRBLogger;
 import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.classes.Session;
-import se.curtrunebylund.projects.classes.Project;
-import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.db.GetChildrenToTaskThread;
 import se.curtrunebylund.projects.db.PersistDBOne;
 import se.curtrunebylund.projects.db.PersistSQLite;

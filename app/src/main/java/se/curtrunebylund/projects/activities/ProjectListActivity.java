@@ -9,7 +9,9 @@ import android.text.TextWatcher;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -23,19 +25,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import classes.Project;
+import gson.GsonEasy;
 import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.adapters.ProjectAdapter;
-import se.curtrunebylund.projects.classes.Project;
 import se.curtrunebylund.projects.db.PersistDBOne;
-import se.curtrunebylund.projects.gson.GsonEasy;
 import se.curtrunebylund.projects.help.Constants;
 import se.curtrunebylund.projects.threads.SelectThread;
-import se.curtrunebylund.projects.util.Debug;
 
 public class ProjectListActivity extends AppCompatActivity implements
         ProjectAdapter.Callback,
         SelectThread.Callback{
     private RecyclerView recyclerView_projectList;
+    public static boolean VERBOSE = true;
     private List<Project> projectList;
     private ProjectAdapter projectAdapter;
     private ProgressBar progressBar;
@@ -45,9 +47,13 @@ public class ProjectListActivity extends AppCompatActivity implements
         setContentView(R.layout.project_list_activity);
         setTitle("project list");
         log("ProjectListActivity.onCreate();");
-        android.widget.EditText editText_search = findViewById(R.id.editText_project_search);
+
+        //find widgets
+        EditText editText_search = findViewById(R.id.editText_project_search);
         recyclerView_projectList = findViewById(R.id.recyclerView_project_list);
         progressBar = findViewById(R.id.progressBar_projectList);
+
+        //set listeners
         editText_search.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -71,7 +77,7 @@ public class ProjectListActivity extends AppCompatActivity implements
     }
 
     private void initRecycler() {
-        log("initRecycler()");
+        if( VERBOSE ) log("initRecycler()");
         projectAdapter = new ProjectAdapter(projectList, this, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView_projectList.setLayoutManager(layoutManager);
@@ -80,7 +86,6 @@ public class ProjectListActivity extends AppCompatActivity implements
     }
 
     private void filter(String text) {
-
         if ( projectList == null){
             logError("projectList is null, i surrender returning");
             return;
@@ -90,19 +95,16 @@ public class ProjectListActivity extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(android.view.Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.music_project_list_menu, menu);
+        menuInflater.inflate(R.menu.projects_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@androidx.annotation.NonNull MenuItem item) {
-        Debug.log("ProjectListActivity.onOptionsItemSelected()");
+        if( VERBOSE) log("ProjectListActivity.onOptionsItemSelected()");
         switch (item.getItemId()) {
             case R.id.icon_home:
                 startActivity(new Intent(this, HomeActivity.class));
-                return true;
-            case R.id.load_from_mysql:
-                //getMusicProjects();
                 return true;
             case R.id.icon_add_project:
                 Intent intent = new Intent(this, ProjectEditorActivity.class);
@@ -115,7 +117,7 @@ public class ProjectListActivity extends AppCompatActivity implements
 
     @Override
     public void onItemClick(Project project) {
-        log("ProjectListActivity.onItemClick(Project)");
+        if( VERBOSE) log("ProjectListActivity.onItemClick(Project)");
         Intent intent = new Intent(this, TaskListActivity.class);
         intent.putExtra(Constants.INTENT_SHOW_TASKS, true);
         intent.putExtra(Constants.INTENT_PROJECT, project);
@@ -124,17 +126,19 @@ public class ProjectListActivity extends AppCompatActivity implements
     @Override
     public void onRequestSelectError(String errMessage) {
         log("onRequestSelectError(String errMessage)", errMessage);
+        Toast.makeText(this, errMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onRequestSelectDone(String json) {
-        log("onRequestSelectDone(String json)");
+        if( VERBOSE) log("onRequestSelectDone(String json)");
         progressBar.setVisibility(View.GONE);
         try {
             projectList = Arrays.asList(GsonEasy.getGson().fromJson(json, Project[].class));
             projectAdapter.setList(projectList);
         }catch (JsonSyntaxException e){
             log("json", json);
+            Toast.makeText(this, "json syntax error onRequestSelectDone", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }

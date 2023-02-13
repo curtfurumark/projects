@@ -1,14 +1,11 @@
 package se.curtrunebylund.projects.db;
 
 import android.app.Activity;
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
 
 import java.util.List;
 
+import classes.Project;
 import se.curtrunebylund.projects.util.Debug;
-import se.curtrunebylund.projects.classes.Project;
 
 public class GetProjectsThread extends Thread {
 

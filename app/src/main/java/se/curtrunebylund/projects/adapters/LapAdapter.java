@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import classes.projects.Lap;
 import se.curtrunebylund.projects.R;
-import se.curtrunebylund.projects.classes.Lap;
 
 public class LapAdapter extends RecyclerView.Adapter<LapAdapter.MyViewHolder>  {
 

@@ -14,11 +14,11 @@ import java.util.Locale;
 import static se.curtrunebylund.projects.util.ProjectsLogger.*;
 
 
+import classes.Task;
 import se.curtrunebylund.projects.classes.Session;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.art.ArtWork;
 import se.curtrunebylund.projects.infinity.ListItem;
-import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.util.ProjectsLogger;
 
 public class DBSQLite extends SQLiteOpenHelper {

@@ -4,22 +4,24 @@ import static se.curtrunebylund.projects.util.ProjectsLogger.log;
 
 import android.app.Activity;
 
+import classes.Project;
+import classes.Task;
+import classes.projects.Assignment;
 import persist.Queeries;
-import se.curtrunebylund.projects.classes.Assignment;
-import se.curtrunebylund.projects.classes.Project;
-import se.curtrunebylund.projects.classes.Task;
+import se.curtrunebylund.projects.threads.InsertThread;
 import se.curtrunebylund.projects.threads.SelectThread;
 import se.curtrunebylund.projects.util.Debug;
 
 public class PersistDBOne {
+    public static boolean VERBOSE = false;
     public static void add(Project project, AddProjectThread.Callback callback, Activity activity){
         Debug.log("PersistDBOne.add(Project, Callback, Activity");
         AddProjectThread thread = new AddProjectThread(project,callback, activity);
         thread.start();
     }
     public static void add(Task task, AddTaskThread.Callback callback, Activity activity) {
-        Debug.log("PersistDBOne.add(Task, Callback, Activity");
-        Debug.log(task);
+        log("PersistDBOne.add(Task, Callback, Activity");
+        log(task);
         AddTaskThread addTaskThread = new AddTaskThread(task, callback, activity);
         addTaskThread.start();
     }
@@ -45,8 +47,8 @@ public class PersistDBOne {
     }
 
     public static void getProjects(SelectThread.Callback callback) {
-        log("PersistDBOne.getProjects(Callback callback)");
-        String query =  Queeries.getSelect(Queeries.Table.SEEBEE_PROJECT);
+        if( VERBOSE) log("PersistDBOne.getProjects(Callback callback)");
+        String query =  Queeries.selectProjects(Queeries.Table.PROJECTS);
         SelectThread thread = new SelectThread(query,callback);
         thread.start();
 
@@ -77,8 +79,17 @@ public class PersistDBOne {
      * @param currentAssignment
      */
 
-    public static void persist(Assignment currentAssignment) {
-        log("PersistDBOne.persist(Assignemnt)");
-        //TODO
+    public static void persist(Assignment currentAssignment, InsertThread.Callback callback) {
+        log("PersistDBOne.persist(Assignment)");
+        String query =Queeries.insert(currentAssignment);
+        InsertThread thread = new InsertThread(query, callback);
+        thread.start();
+    }
+
+    public static void getAssignments(SelectThread.Callback callback) {
+        log("PersistDBOne.getAssignments(SelectThread.Callback)");
+        String query = Queeries.selectAssignments();
+        SelectThread thread = new SelectThread(query, callback);
+        thread.start();
     }
 }

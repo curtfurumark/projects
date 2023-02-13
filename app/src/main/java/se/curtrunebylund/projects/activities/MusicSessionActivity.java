@@ -5,11 +5,12 @@ import static logger.CRBLogger.log;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.style.TtsSpan;
+import android.view.DragEvent;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,46 +22,72 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import classes.Project;
+import classes.Task;
+import classes.projects.Assignment;
+import classes.projects.Lap;
+import gson.GsonEasy;
 import item.State;
 import item.Type;
+import persist.DB1Result;
 import se.curtrunebylund.projects.R;
 import se.curtrunebylund.projects.adapters.LapAdapter;
-import se.curtrunebylund.projects.classes.Assignment;
-import se.curtrunebylund.projects.classes.Lap;
-import se.curtrunebylund.projects.classes.Project;
 import se.curtrunebylund.projects.classes.Session;
-import se.curtrunebylund.projects.classes.SessionLog;
-import se.curtrunebylund.projects.classes.Task;
 import se.curtrunebylund.projects.db.PersistDBOne;
 import se.curtrunebylund.projects.db.PersistSQLite;
 import se.curtrunebylund.projects.fragments.AddAssignmentFragment;
-import se.curtrunebylund.projects.fragments.AddSessionFragment;
 import se.curtrunebylund.projects.help.Constants;
 import se.curtrunebylund.projects.projects.Grade;
+import se.curtrunebylund.projects.threads.InsertThread;
+import se.curtrunebylund.projects.threads.SelectThread;
 import se.curtrunebylund.projects.util.Debug;
 import se.curtrunebylund.projects.util.Kronos;
 import util.Converter;
 
-public class MusicSessionActivity extends AppCompatActivity implements Kronos.Callback, AddAssignmentFragment.Callback {
+public class MusicSessionActivity extends AppCompatActivity implements
+        Kronos.Callback,
+        InsertThread.Callback,
+        SelectThread.Callback,
+        AddAssignmentFragment.Callback {
     private EditText editText_heading;
     private EditText  editText_comment;
     private EditText editText_assignment;
     private Button button_repetitions;
+    private CheckBox checkBox_assignment;
     private Button button_timer;
     private  Button button_lap;
-    private Button button_saveAssignment;
     private TextView textView_timer;
     private Integer n_repetitions = 0;
     private Assignment currentAssignment;
     private List<Assignment> assignments = new ArrayList<>();
 
-    private enum AssignmentMode{
-        REPS, LAPS, DONE,  PENDING
+    @Override
+    public void onItemInserted(DB1Result result) {
+        log("MusicSessionActivity.onItemInsert(DB1Result)");
+        if( !result.isOK()){
+            Toast.makeText(this, "error inserting assignment", Toast.LENGTH_LONG).show();
+            log(result);
+        }
     }
-    private AssignmentMode mode = AssignmentMode.PENDING;
+
+    @Override
+    public void onRequestSelectError(String errMessage) {
+        Toast.makeText(this, errMessage, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onRequestSelectDone(String json) {
+        log("MusicSessionActivity.onRequestSelectDone(String json)");
+        log("json", json);
+        Assignment[] assignmentsArray = GsonEasy.getGson().fromJson(json, Assignment[].class);
+        List<Assignment> assignments1 = Arrays.asList(assignmentsArray);
+        log("size of list", assignments1.size());
+        //assignments = new ArrayList<>(Arrays.asList(GsonEasy.getGson().fromJson(json, Assignment[].class)));
+    }
     private final boolean VERBOSE = true;
     private boolean lap_running = false;
     private TextView textView_lap;
@@ -69,7 +96,6 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
     private final Grade grade = Grade.PENDING;
     private Session session;
 
-    private SessionLog sessionLog;
     private RecyclerView recyclerView_laps;
     private LapAdapter lapAdapter;
     private final List<Lap> laps = new ArrayList<>();
@@ -84,7 +110,7 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         log("MusicSessionActivity.onCreate()");
         setTitle("music session");
 
-        //private EditText editText_task_heading;
+        //find controls, ui elements or whatever
         TextView textView_task_heading = findViewById(R.id.textView_musicSession_task_heading);
         editText_heading = findViewById(R.id.editText_musicSession_heading);
         textView_timer = findViewById(R.id.textView_musicSession_timer);
@@ -94,14 +120,34 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         button_lap = findViewById(R.id.button_musicSession_lap);
         button_lap.setEnabled(false);
         button_timer = findViewById(R.id.button_musicSession_timer);
-        button_saveAssignment = findViewById(R.id.musicSession_button_saveAssignment);
-        button_saveAssignment.setOnClickListener(new View.OnClickListener() {
+        Button button_saveAssignment = findViewById(R.id.musicSession_button_saveAssignment);
+        editText_assignment = findViewById(R.id.editText_musicSession_assignment);
+        button_repetitions = findViewById(R.id.musicSession_button_repetitions);
+        checkBox_assignment = findViewById(R.id.musicSession_checkBox_assignment);
+
+        //set listeners
+        editText_assignment.setOnDragListener(new View.OnDragListener() {
             @Override
-            public void onClick(View view) {
-                saveAssignment();
+            public boolean onDrag(View view, DragEvent dragEvent) {
+                log("editText_assignment.onDrag()");
+                switch (dragEvent.getAction()) {
+                    case DragEvent.ACTION_DRAG_STARTED:
+                        log("DragEvent.ACTION_DRAG_STARTED");
+                        break;
+                    case DragEvent.ACTION_DRAG_ENDED:
+                        log("DragEvent.ACTION_DRAG_ENDED");
+                        break;
+                    case DragEvent.ACTION_DRAG_EXITED:
+                        log("DragEvent.ACTION_DRAG_EXITED");
+                        break;
+                    case DragEvent.ACTION_DRAG_ENTERED:
+                        log("DragEvent.ACTION_DRAG_ENTERED");
+                        break;
+                }
+                return false;
             }
         });
-        editText_assignment = findViewById(R.id.editText_musicSession_assignment);
+        button_saveAssignment.setOnClickListener(view -> saveAssignment());
         button_lap.setOnClickListener(view -> onButtonLap());
         button_timer.setOnClickListener(view -> {
             switch(kronos.getState()){
@@ -131,13 +177,16 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
             stopLap();
             return true;
         });
+        checkBox_assignment.setOnClickListener(view -> {
+            if(checkBox_assignment.isChecked()){
+                saveAssignment();
+            }
+        });
 
-        button_repetitions = findViewById(R.id.musicSession_button_repetitions);
         button_repetitions.setOnClickListener(view -> {
             n_repetitions++;
             String str = String.format(Locale.getDefault(), "%d", n_repetitions);
             button_repetitions.setText(str);
-            updateAssignment(AssignmentMode.REPS);
         });
 
         button_repetitions.setOnLongClickListener(view -> {
@@ -145,13 +194,12 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
             button_repetitions.setText(R.string.ui_just_do_it);
             return  true;
         });
-        kronos = Kronos.getInstance(this);
+
         Intent intent = getIntent();
         if( intent.getBooleanExtra(Constants.INTENT_MUSIC_SESSION, false)){
             task = (Task) intent.getSerializableExtra(Constants.INTENT_TASK);
             textView_task_heading.setText(task.getHeading());
             session = (Session) intent.getSerializableExtra(Constants.INTENT_SERIALIZED_ATTEMPT);
-            sessionLog = session.getSessionLog();
             //setTitle(String.format(Locale.getDefault(), "%s, (%d)", session.getHeading(), session.getId()));
             editText_heading.setText(session.getHeading());
             project = (Project) intent.getSerializableExtra(Constants.INTENT_PROJECT);
@@ -159,17 +207,36 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         }else if( intent.getBooleanExtra(Constants.INTENT_BLANK_MUSIC_SESSION, false)){
             log("INTENT_BLANK_MUSIC_SESSION");
             session  = new Session();
-            sessionLog = session.getSessionLog();
             setTitle("new session");
         }
-        sessionLog = new SessionLog(session.getId());
+
+        //init stuff that needs to be initialized
+        kronos = Kronos.getInstance(this);
         initRecycler();
+        getAssignments();
     }
+
+    private void getAssignments() {
+        if( VERBOSE) log("MusicSessionActivity.getAssignments()");
+        PersistDBOne.getAssignments(this);
+    }
+
+    private String repsToString(){
+        return String.format(Locale.getDefault(), "number of repitition: %d", n_repetitions );
+    }
+
 
     private void saveAssignment() {
         log("MusicSessionActivity.saveAssignment()");
         //session.addAssignment(currentAssignment);
-        assignments.add(currentAssignment);
+        currentAssignment.setDone(true);
+        currentAssignment.appendContent(repsToString());
+        PersistDBOne.persist(currentAssignment, this);
+        if(assignments.size() > 0){
+            //TODO, set next assignment as current, but
+            //stack or queue or whatever
+            //think about it
+        }
         currentAssignment = null;
     }
 
@@ -214,26 +281,20 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
     }
 
     @Override
-    public void onAddAssignment(String heading, Assignment.Type type) {
-        log("MusicSessionActivity.onAddAssignement(String heading, Assignment.Type type)");
+    public void onAddAssignment(String heading) {
+        log("MusicSessionActivity.onAddAssignment(String heading)");
         editText_assignment.setText(heading);
-        Toast.makeText(this, "type " + type.toString(), Toast.LENGTH_LONG).show();
-        currentAssignment = new Assignment(heading, type);
-        PersistDBOne.persist(currentAssignment);
-/*        if( type.equals(Assignment.Type.LAPS)){
-            button_repetitions.setEnabled(false);
-            button_lap.setEnabled(true);
-        }else{
-            button_lap.setEnabled(false);
-            button_repetitions.setEnabled(true);
-        }*/
+        //Toast.makeText(this, "type " + type.toString(), Toast.LENGTH_LONG).show();
+        currentAssignment = new Assignment(heading);
+        assignments.add(currentAssignment);
+        PersistDBOne.persist(currentAssignment, this);
     }
 
     private void onButtonLap() {
         if( VERBOSE)log("MusicSessionActivity.onButtonLap()");
         if(lap_running){
             stopLap();
-            updateAssignment(AssignmentMode.LAPS);
+            currentAssignment.addLap(current_lap);
         }else {
             current_lap = new Lap();
             lap_running = true;
@@ -258,7 +319,7 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
                 newAssignment();
                 break;
             case R.id.musicSession_assignment_check:
-                updateAssignment(AssignmentMode.DONE);
+                saveAssignment();
                 break;
             case R.id.musicSession_reload_kronos:
                 //timer.reLoadTimer(this);
@@ -295,7 +356,7 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
      */
     private void newAssignment() {
         if (VERBOSE) log("MusicSessionActivity.newAssignment()");
-        new AddAssignmentFragment().show(getSupportFragmentManager(), "new assignement");
+        new AddAssignmentFragment().show(getSupportFragmentManager(), "new assignment");
     }
 
     private void restoreUI() {
@@ -337,7 +398,6 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         session.setState(State.DONE);
         editText_heading.setHint("heading");
         editText_comment.setHint("comment");
-        session.set(sessionLog);
         PersistSQLite.update(session, this);
         PersistDBOne.touch(project, task);
 
@@ -356,25 +416,8 @@ public class MusicSessionActivity extends AppCompatActivity implements Kronos.Ca
         lap_running = false;
         button_lap.setText(R.string.ui_start_lap);
         laps.add(0, current_lap);
+        currentAssignment.addLap(current_lap);
         lapAdapter.notifyItemInserted(0);
         textView_lap.setText("00:00:00");
-    }
-    private void updateAssignment(AssignmentMode mode){
-        if( VERBOSE) log("MusicSessionActivity.updateAssignment(AssignmentMode)", mode.toString());
-        if( currentAssignment != null) {
-            switch (mode) {
-                case LAPS:
-                    currentAssignment.addLap(current_lap);
-                    break;
-                case REPS:
-                    if( VERBOSE) log("REPS", n_repetitions);
-                    currentAssignment.setReps(n_repetitions);
-                    break;
-                case DONE:
-                    sessionLog.add(currentAssignment);
-                    currentAssignment = null;
-                    break;
-            }
-        }
     }
 }
